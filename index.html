@@ -1,85 +1,92 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="color-scheme" content="dark light" />
+<meta name="color-scheme" content="light dark" />
 <meta name="description" content="An interactive one-day Transfusion Medicine crash course for medical students — blood bank, coagulation, and apheresis. Built for Chloe & Matt." />
 <title>Transfusion Medicine · One-Day Crash Course</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<script>/* set theme before paint to avoid flash */(function(){try{var t=localStorage.getItem('tm-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script>
 <style id="css">
 /* ============================================================
-   DESIGN TOKENS
+   DESIGN TOKENS  —  warm-neutral monochrome + single blue accent
    ============================================================ */
 :root{
-  --sb: 250px;            /* sidebar width */
-  --hb: 60px;             /* header height */
-  --maxw: 940px;          /* readable column */
+  --sb: 264px;            /* sidebar width */
+  --hb: 56px;             /* header height */
+  --maxw: 1000px;         /* readable column */
   --radius: 14px;
   --radius-sm: 10px;
   --radius-lg: 22px;
-  --space-sec: clamp(2.6rem, 1.8rem + 3vw, 4.4rem);
-  --dur: 320ms;
-  --dur-fast: 160ms;
-  --ease: cubic-bezier(.16,1,.3,1);
-  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --space-sec: clamp(3.2rem, 2.2rem + 4vw, 6rem);
+  --dur: 400ms;
+  --dur-fast: 200ms;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* semantic pillar + status hues (shared across themes) */
-  --blood: oklch(64% 0.20 18);
-  --coag:  oklch(74% 0.15 72);
-  --aph:   oklch(70% 0.13 196);
-  --good:  oklch(72% 0.16 155);
-  --bad:   oklch(64% 0.21 22);
-  --warn:  oklch(76% 0.15 78);
-  --info:  oklch(70% 0.13 244);
+  /* muted semantic hues — used only as small accents / labels / quiz states */
+  --blood: #c0556e;
+  --coag:  #b07d2e;
+  --aph:   #3a8f96;
+  --good:  #2e8b57;
+  --bad:   #cf3b46;
+  --warn:  #a8772a;
+  --info:  #3d7fb0;
 }
 
-/* ---------- DARK (default) ---------- */
-html[data-theme="dark"]{
-  --bg:        oklch(15.5% 0.013 264);
-  --bg-grad:   radial-gradient(1200px 700px at 78% -8%, oklch(28% 0.07 277 / .28), transparent 60%),
-               radial-gradient(900px 600px at -5% 12%, oklch(30% 0.06 20 / .14), transparent 55%);
-  --surface:   oklch(21% 0.014 264 / .72);
-  --surface-2: oklch(24.5% 0.016 264 / .80);
-  --surface-3: oklch(28% 0.018 264 / .9);
-  --border:    oklch(100% 0 0 / .09);
-  --border-2:  oklch(100% 0 0 / .15);
-  --text:      oklch(96% 0.004 264);
-  --muted:     oklch(73% 0.015 264);
-  --faint:     oklch(60% 0.016 264);
-  --accent:    oklch(70% 0.16 274);
-  --accent-2:  oklch(76% 0.14 300);
-  --accent-soft: oklch(70% 0.16 274 / .16);
-  --on-accent: oklch(99% 0 0);
-  --shadow:    0 1px 2px oklch(0% 0 0/.4), 0 12px 34px -12px oklch(0% 0 0/.6);
-  --shadow-lg: 0 28px 70px -22px oklch(0% 0 0/.75);
-  --glass:     blur(16px) saturate(1.3);
-  color-scheme: dark;
-}
-/* ---------- LIGHT ---------- */
+/* ---------- LIGHT (Apple-like) ---------- */
 html[data-theme="light"]{
-  --bg:        oklch(96.5% 0.006 264);
-  --bg-grad:   radial-gradient(1100px 680px at 80% -10%, oklch(72% 0.1 277 / .18), transparent 60%),
-               radial-gradient(820px 560px at -4% 8%, oklch(72% 0.12 20 / .12), transparent 55%);
-  --surface:   oklch(99.6% 0.002 264 / .82);
-  --surface-2: oklch(98% 0.004 264 / .9);
-  --surface-3: oklch(95.5% 0.006 264);
-  --border:    oklch(20% 0.02 264 / .10);
-  --border-2:  oklch(20% 0.02 264 / .18);
-  --text:      oklch(24% 0.02 274);
-  --muted:     oklch(45% 0.02 274);
-  --faint:     oklch(58% 0.02 274);
-  --accent:    oklch(54% 0.18 274);
-  --accent-2:  oklch(58% 0.17 300);
-  --accent-soft: oklch(54% 0.18 274 / .12);
-  --on-accent: oklch(99% 0 0);
-  --shadow:    0 1px 2px oklch(50% 0.02 264/.12), 0 14px 36px -16px oklch(40% 0.03 264/.28);
-  --shadow-lg: 0 30px 70px -26px oklch(40% 0.04 264/.36);
-  --glass:     blur(16px) saturate(1.25);
+  --bg:        #ffffff;
+  --bg-2:      #f5f5f7;
+  --bg-soft:   #fbfbfd;
+  --surface:   #ffffff;
+  --surface-2: #f5f5f7;
+  --surface-3: #ececef;
+  --border:    rgba(0,0,0,.10);
+  --border-2:  rgba(0,0,0,.16);
+  --hair:      rgba(0,0,0,.08);
+  --text:      #1d1d1f;
+  --muted:     #6e6e73;
+  --faint:     #86868b;
+  --accent:    #0071e3;
+  --accent-press:#0077ed;
+  --accent-soft: rgba(0,113,227,.10);
+  --on-accent: #ffffff;
+  --shadow:    0 1px 2px rgba(0,0,0,.04);
+  --shadow-hover: 0 4px 18px -6px rgba(0,0,0,.12);
+  --shadow-lg: 0 24px 60px -28px rgba(0,0,0,.22);
+  --nav-bg:    rgba(255,255,255,.72);
+  --ambient-1: rgba(0,113,227,.05);
+  --ambient-2: rgba(192,85,110,.045);
   color-scheme: light;
+}
+/* ---------- DARK (true black, Apple-like) ---------- */
+html[data-theme="dark"]{
+  --bg:        #000000;
+  --bg-2:      #0b0b0c;
+  --bg-soft:   #101012;
+  --surface:   #141416;
+  --surface-2: #1c1c1f;
+  --surface-3: #28282c;
+  --border:    rgba(255,255,255,.11);
+  --border-2:  rgba(255,255,255,.20);
+  --hair:      rgba(255,255,255,.08);
+  --text:      #f5f5f7;
+  --muted:     #a1a1a6;
+  --faint:     #86868b;
+  --accent:    #2997ff;
+  --accent-press:#0a84ff;
+  --accent-soft: rgba(41,151,255,.14);
+  --on-accent: #ffffff;
+  --shadow:    0 1px 2px rgba(0,0,0,.5);
+  --shadow-hover: 0 8px 26px -10px rgba(0,0,0,.7);
+  --shadow-lg: 0 30px 70px -30px rgba(0,0,0,.85);
+  --nav-bg:    rgba(10,10,12,.62);
+  --ambient-1: rgba(41,151,255,.06);
+  --ambient-2: rgba(192,85,110,.05);
+  color-scheme: dark;
 }
 
 /* ============================================================
@@ -88,265 +95,244 @@ html[data-theme="light"]{
 *,*::before,*::after{ box-sizing:border-box }
 html{ scroll-behavior:smooth }
 body{
-  margin:0; font-family:var(--font); color:var(--text);
-  background:var(--bg); font-size:15px; line-height:1.6;
-  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-  letter-spacing:-0.011em; overflow:hidden;
+  margin:0; font-family:var(--font); color:var(--text); background:var(--bg);
+  font-size:15px; line-height:1.6; letter-spacing:-0.012em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow:hidden;
 }
-#bg{ position:fixed; inset:0; width:100%; height:100%; z-index:-2; display:block }
-body::before{ content:""; position:fixed; inset:0; z-index:-1; background:var(--bg-grad); pointer-events:none }
-h1,h2,h3,h4{ margin:0; line-height:1.18; letter-spacing:-0.02em; font-weight:700 }
+/* ambient depth — single very soft, slow radial wash (no particles) */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 82% -6%, var(--ambient-1), transparent 60%),
+    radial-gradient(50% 45% at -8% 4%, var(--ambient-2), transparent 55%);
+  animation:drift 26s var(--ease) infinite alternate;
+}
+@keyframes drift{ from{ transform:translate3d(0,0,0) } to{ transform:translate3d(0,-14px,0) } }
+/* faint grain overlay for editorial texture */
+body::after{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+h1,h2,h3,h4,h5{ margin:0; line-height:1.12; letter-spacing:-0.025em; font-weight:600 }
 p{ margin:0 }
 a{ color:inherit; text-decoration:none }
-strong{ font-weight:700; color:var(--text) }
+strong{ font-weight:600; color:var(--text) }
 em{ font-style:italic }
 ::selection{ background:var(--accent-soft); color:var(--text) }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:5px }
 
-.skip-link{ position:fixed; left:-999px; top:8px; z-index:100; background:var(--accent); color:var(--on-accent); padding:.5rem .9rem; border-radius:8px }
+.skip-link{ position:fixed; left:-999px; top:8px; z-index:100; background:var(--text); color:var(--bg); padding:.5rem .9rem; border-radius:8px }
 .skip-link:focus{ left:8px }
 
-:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:6px }
-
-/* scrollbar */
-.main::-webkit-scrollbar{ width:11px }
+.main::-webkit-scrollbar{ width:10px }
 .main::-webkit-scrollbar-thumb{ background:var(--border-2); border-radius:99px; border:3px solid transparent; background-clip:content-box }
-.main::-webkit-scrollbar-thumb:hover{ background:var(--faint) }
 
-/* top scroll progress */
-.scroll-progress{ position:fixed; top:0; left:0; right:0; height:2px; z-index:60; background:transparent }
-.scroll-progress span{ display:block; height:100%; width:0%;
-  background:linear-gradient(90deg, var(--blood), var(--accent), var(--aph)); transition:width 80ms linear }
+.scroll-progress{ position:fixed; top:0; left:0; right:0; height:2px; z-index:60 }
+.scroll-progress span{ display:block; height:100%; width:0%; background:var(--accent); transition:width 90ms linear }
 
 /* ============================================================
    APP SHELL
    ============================================================ */
-.app{ display:grid; grid-template-columns:var(--sb) 1fr; grid-template-rows:var(--hb) 1fr;
-  height:100vh; height:100dvh }
+.app{ display:grid; grid-template-columns:var(--sb) 1fr; grid-template-rows:var(--hb) 1fr; height:100vh; height:100dvh }
 
-/* ---- sidebar ---- */
-.sidebar{ grid-row:1 / 3; grid-column:1; display:flex; flex-direction:column;
-  border-right:1px solid var(--border); background:var(--surface);
-  backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass); padding:18px 14px; gap:6px; z-index:40 }
-.brand{ display:flex; align-items:center; gap:11px; padding:6px 8px 16px }
-.brand-mark{ width:38px; height:38px; flex:0 0 auto; display:grid; place-items:center; border-radius:11px;
-  background:var(--surface-3); border:1px solid var(--border); box-shadow:var(--shadow) }
-.brand-text{ display:flex; flex-direction:column; line-height:1.2 }
-.brand-text strong{ font-size:.92rem; font-weight:700 }
+/* sidebar */
+.sidebar{ grid-row:1 / 3; grid-column:1; display:flex; flex-direction:column; gap:4px;
+  border-right:1px solid var(--hair); background:var(--bg); padding:20px 14px; z-index:40 }
+.brand{ display:flex; align-items:center; gap:11px; padding:4px 8px 18px }
+.brand-mark{ width:34px; height:34px; flex:0 0 auto; display:grid; place-items:center; border-radius:9px;
+  background:var(--surface-2); border:1px solid var(--hair); color:var(--text) }
+.brand-text{ display:flex; flex-direction:column; line-height:1.25 }
+.brand-text strong{ font-size:.9rem; font-weight:600; letter-spacing:-0.02em }
 .brand-text span{ font-size:.72rem; color:var(--faint) }
 
 .nav{ display:flex; flex-direction:column; gap:1px; overflow-y:auto; flex:1; margin:0 -4px; padding:0 4px }
-.nav-group{ font-size:.66rem; text-transform:uppercase; letter-spacing:.13em; color:var(--faint);
-  margin:14px 10px 5px; font-weight:600 }
-.nav-item{ display:flex; align-items:center; gap:10px; padding:8px 11px; border-radius:9px;
-  font-size:.86rem; font-weight:500; color:var(--muted); transition:background var(--dur-fast), color var(--dur-fast);
-  position:relative }
+.nav-group{ font-size:.66rem; text-transform:uppercase; letter-spacing:.12em; color:var(--faint);
+  margin:16px 10px 6px; font-weight:600 }
+.nav-item{ display:flex; align-items:center; gap:11px; padding:8px 11px; border-radius:8px;
+  font-size:.86rem; font-weight:450; color:var(--muted); transition:background var(--dur-fast), color var(--dur-fast) }
 .nav-item:hover{ background:var(--surface-2); color:var(--text) }
-.nav-item.is-active{ background:var(--accent-soft); color:var(--text); font-weight:600 }
-.nav-item.is-active::before{ content:""; position:absolute; left:-4px; top:50%; transform:translateY(-50%);
-  width:3px; height:18px; border-radius:2px; background:var(--accent) }
-.nav-ico{ font-size:.6rem; color:var(--faint); width:12px; text-align:center }
+.nav-item.is-active{ background:var(--surface-2); color:var(--text); font-weight:550 }
+.nav-ico{ font-size:.5rem; color:var(--faint); width:10px; text-align:center }
 .nav-item.is-active .nav-ico{ color:var(--accent) }
 .nav-ico--blood{ color:var(--blood) } .nav-ico--coag{ color:var(--coag) } .nav-ico--aph{ color:var(--aph) }
 
-.sidebar-foot{ padding-top:12px; border-top:1px solid var(--border); margin-top:4px }
-.learner-chip{ display:flex; align-items:center; gap:10px; padding:8px; border-radius:11px; background:var(--surface-2) }
+.sidebar-foot{ padding-top:14px; border-top:1px solid var(--hair); margin-top:4px }
+.learner-chip{ display:flex; align-items:center; gap:10px; padding:8px; border-radius:10px }
 .learner-avatars{ display:flex }
 .learner-avatars span{ width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
-  font-size:.72rem; font-weight:700; color:var(--on-accent); border:2px solid var(--surface) }
-.learner-avatars span:first-child{ background:var(--blood) }
-.learner-avatars span:last-child{ background:var(--aph); margin-left:-9px }
+  font-size:.7rem; font-weight:600; color:#fff; border:2px solid var(--bg) }
+.learner-avatars span:first-child{ background:#7c7c82 }
+.learner-avatars span:last-child{ background:#54545a; margin-left:-9px }
 .learner-meta{ display:flex; flex-direction:column; line-height:1.25 }
-.learner-meta strong{ font-size:.8rem } .learner-meta span{ font-size:.68rem; color:var(--faint) }
+.learner-meta strong{ font-size:.8rem; font-weight:600 } .learner-meta span{ font-size:.68rem; color:var(--faint) }
 
-/* ---- topbar ---- */
-.topbar{ grid-column:2; grid-row:1; display:flex; align-items:center; gap:14px; padding:0 clamp(16px,3vw,30px);
-  border-bottom:1px solid var(--border); background:var(--surface); backdrop-filter:var(--glass);
-  -webkit-backdrop-filter:var(--glass); z-index:30 }
+/* topbar — the one place a navbar blur is allowed */
+.topbar{ grid-column:2; grid-row:1; display:flex; align-items:center; gap:14px; padding:0 clamp(16px,3vw,34px);
+  border-bottom:1px solid var(--hair); background:var(--nav-bg); backdrop-filter:saturate(1.8) blur(20px);
+  -webkit-backdrop-filter:saturate(1.8) blur(20px); z-index:30 }
 .crumb{ display:flex; flex-direction:column; line-height:1.15; flex:1; min-width:0 }
-.crumb-kicker{ font-size:.62rem; text-transform:uppercase; letter-spacing:.14em; color:var(--faint); font-weight:600 }
-.crumb-title{ font-size:.98rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.crumb-kicker{ font-size:.6rem; text-transform:uppercase; letter-spacing:.14em; color:var(--faint); font-weight:600 }
+.crumb-title{ font-size:.95rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:-0.02em }
 .topbar-right{ display:flex; align-items:center; gap:10px }
 
-.icon-btn{ width:38px; height:38px; flex:0 0 auto; display:grid; place-items:center; border-radius:10px;
-  background:var(--surface-2); border:1px solid var(--border); color:var(--muted); cursor:pointer;
+.icon-btn{ width:36px; height:36px; flex:0 0 auto; display:grid; place-items:center; border-radius:9px;
+  background:transparent; border:1px solid var(--border); color:var(--muted); cursor:pointer;
   transition:background var(--dur-fast), color var(--dur-fast), transform var(--dur-fast) }
-.icon-btn:hover{ background:var(--surface-3); color:var(--text) }
+.icon-btn:hover{ background:var(--surface-2); color:var(--text) }
 .icon-btn:active{ transform:scale(.94) }
 .menu-btn{ display:none }
 .ico-moon{ display:none } html[data-theme="dark"] .ico-sun{ display:none } html[data-theme="dark"] .ico-moon{ display:block }
 
 .progress-pill{ display:flex; align-items:center; gap:9px; padding:5px 13px 5px 6px; border-radius:99px;
-  background:var(--surface-2); border:1px solid var(--border) }
+  border:1px solid var(--border) }
 .ring{ transform:rotate(-90deg) }
 .ring-bg{ fill:none; stroke:var(--border-2); stroke-width:3 }
 .ring-fg{ fill:none; stroke:var(--accent); stroke-width:3; stroke-linecap:round;
   stroke-dasharray:97.4; stroke-dashoffset:97.4; transition:stroke-dashoffset var(--dur) var(--ease) }
 .progress-pill-text{ display:flex; flex-direction:column; line-height:1.1 }
-.progress-pill-text strong{ font-size:.82rem } .progress-pill-text span{ font-size:.64rem; color:var(--faint) }
+.progress-pill-text strong{ font-size:.8rem; font-weight:600 } .progress-pill-text span{ font-size:.63rem; color:var(--faint) }
 
-/* ---- main ---- */
+/* main */
 .main{ grid-column:2; grid-row:2; overflow-y:auto; scroll-behavior:smooth; position:relative }
-.section{ max-width:var(--maxw); margin:0 auto; padding:var(--space-sec) clamp(16px,3vw,34px);
-  scroll-margin-top:20px }
-.section + .section{ border-top:1px solid var(--border) }
-.section-head{ margin-bottom:26px }
-.section-head h2{ font-size:clamp(1.5rem,1.1rem+1.6vw,2.05rem); margin:8px 0 8px }
-.section-sub{ color:var(--muted); max-width:62ch; font-size:.97rem }
+.section{ max-width:var(--maxw); margin:0 auto; padding:var(--space-sec) clamp(18px,3vw,40px); scroll-margin-top:20px }
+.section + .section{ border-top:1px solid var(--hair) }
+.section-head{ margin-bottom:30px; max-width:70ch }
+.section-head h2{ font-size:clamp(1.7rem,1.2rem+1.9vw,2.4rem); margin:12px 0 12px; letter-spacing:-0.03em }
+.section-sub{ color:var(--muted); max-width:64ch; font-size:1rem; line-height:1.55 }
 
 /* ============================================================
    REVEAL
    ============================================================ */
-.reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s var(--ease), transform .6s var(--ease) }
+.reveal{ opacity:0; transform:translateY(12px); transition:opacity .6s var(--ease-out), transform .6s var(--ease-out) }
 .reveal.in{ opacity:1; transform:none }
 
 /* ============================================================
    PRIMITIVES
    ============================================================ */
-.kicker{ display:inline-block; font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.15em;
-  color:var(--accent); padding:4px 10px; border-radius:99px; background:var(--accent-soft) }
-.kicker--blood{ color:var(--blood); background:oklch(64% .2 18/.14) }
-.kicker--coag{ color:var(--coag); background:oklch(74% .15 72/.16) }
-.kicker--aph{ color:var(--aph); background:oklch(70% .13 196/.16) }
+.kicker{ display:inline-block; font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.14em; color:var(--accent) }
+.kicker--blood{ color:var(--blood) } .kicker--coag{ color:var(--coag) } .kicker--aph{ color:var(--aph) }
 
-.surface{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-  padding:20px; box-shadow:var(--shadow); backdrop-filter:var(--glass); -webkit-backdrop-filter:var(--glass) }
+.surface{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px }
 .muted-note{ color:var(--faint); font-size:.85rem }
-.ticks{ list-style:none; padding:0; margin:10px 0; display:flex; flex-direction:column; gap:7px }
+.ticks{ list-style:none; padding:0; margin:12px 0; display:flex; flex-direction:column; gap:9px }
 .ticks li{ position:relative; padding-left:24px; font-size:.9rem; color:var(--muted) }
-.ticks li::before{ content:"✓"; position:absolute; left:0; top:0; color:var(--good); font-weight:700 }
+.ticks li::before{ content:""; position:absolute; left:2px; top:.55em; width:9px; height:5px;
+  border-left:1.6px solid var(--accent); border-bottom:1.6px solid var(--accent); transform:rotate(-45deg) }
 
 .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px }
 .grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px }
-.grid-auto{ display:grid; grid-template-columns:repeat(auto-fit,minmax(232px,1fr)); gap:16px }
+.grid-auto{ display:grid; grid-template-columns:repeat(auto-fit,minmax(244px,1fr)); gap:16px }
 
-.btn{ display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:11px; font-size:.9rem;
-  font-weight:600; cursor:pointer; border:1px solid transparent; transition:transform var(--dur-fast), background var(--dur-fast), box-shadow var(--dur-fast); font-family:inherit }
-.btn:active{ transform:translateY(1px) }
-.btn--primary{ background:linear-gradient(180deg,var(--accent-2),var(--accent)); color:var(--on-accent);
-  box-shadow:0 8px 22px -10px var(--accent) }
-.btn--primary:hover{ box-shadow:0 12px 28px -10px var(--accent); transform:translateY(-1px) }
-.btn--ghost{ background:var(--surface-2); border-color:var(--border-2); color:var(--text) }
-.btn--ghost:hover{ background:var(--surface-3) }
-.btn--sm{ padding:8px 14px; font-size:.82rem; border-radius:9px }
+.btn{ display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:12px; font-size:.9rem;
+  font-weight:550; cursor:pointer; border:1px solid transparent; font-family:inherit; letter-spacing:-0.01em;
+  transition:background var(--dur-fast), border-color var(--dur-fast), transform var(--dur-fast), color var(--dur-fast) }
+.btn:active{ transform:scale(.98) }
+.btn--primary{ background:var(--accent); color:var(--on-accent) }
+.btn--primary:hover{ background:var(--accent-press) }
+.btn--ghost{ background:transparent; border-color:var(--border-2); color:var(--text) }
+.btn--ghost:hover{ background:var(--surface-2) }
+.btn--sm{ padding:8px 15px; font-size:.82rem; border-radius:9px }
 
 /* ============================================================
    HERO
    ============================================================ */
-.hero{ position:relative; padding:30px 4px 8px }
-.hero-glow{ position:absolute; inset:-40px -20px auto auto; width:340px; height:300px; z-index:-1;
-  background:radial-gradient(circle at 70% 30%, var(--accent-soft), transparent 65%); filter:blur(8px) }
-.hero-title{ font-size:clamp(2rem,1.2rem+3.4vw,3.3rem); margin:18px 0 16px; max-width:18ch; line-height:1.05 }
-.hero-lede{ font-size:clamp(1rem,.94rem+.4vw,1.18rem); color:var(--muted); max-width:60ch }
-.hero-lede strong{ color:var(--text) }
-.hero-actions{ display:flex; gap:12px; margin:24px 0 30px; flex-wrap:wrap }
-.hero-stats{ display:grid; grid-template-columns:repeat(4,auto); gap:30px; margin:0; padding-top:22px;
-  border-top:1px solid var(--border) }
-.hero-stats div{ display:flex; flex-direction:column-reverse; gap:2px }
-.hero-stats dt{ font-size:.72rem; color:var(--faint); text-transform:uppercase; letter-spacing:.08em }
-.hero-stats dd{ margin:0; font-size:1.7rem; font-weight:800; font-family:var(--mono);
-  background:linear-gradient(180deg,var(--text),var(--muted)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent }
+.hero{ padding:28px 0 8px }
+.hero-title{ font-size:clamp(2.2rem,1.3rem+3.6vw,3.6rem); margin:18px 0 18px; max-width:17ch; line-height:1.04; letter-spacing:-0.035em; font-weight:600 }
+.hero-lede{ font-size:clamp(1.05rem,.96rem+.5vw,1.3rem); color:var(--muted); max-width:58ch; line-height:1.5; font-weight:400 }
+.hero-lede strong{ color:var(--text); font-weight:550 }
+.hero-actions{ display:flex; gap:12px; margin:28px 0 36px; flex-wrap:wrap }
+.hero-stats{ display:grid; grid-template-columns:repeat(4,auto); gap:40px; margin:0; padding-top:26px; border-top:1px solid var(--hair) }
+.hero-stats div{ display:flex; flex-direction:column-reverse; gap:3px }
+.hero-stats dt{ font-size:.72rem; color:var(--faint); text-transform:uppercase; letter-spacing:.06em }
+.hero-stats dd{ margin:0; font-size:2rem; font-weight:600; letter-spacing:-0.04em; color:var(--text) }
 
-.pillar-card{ position:relative; display:flex; flex-direction:column; gap:9px; padding:22px; border-radius:var(--radius);
-  background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden;
-  transition:transform var(--dur) var(--ease), border-color var(--dur), box-shadow var(--dur);
-  --pc:var(--accent) }
-.pillar-card::before{ content:""; position:absolute; inset:0 0 auto 0; height:3px; background:var(--pc) }
-.pillar-card::after{ content:""; position:absolute; right:-30px; top:-30px; width:120px; height:120px; border-radius:50%;
-  background:radial-gradient(circle, var(--pc), transparent 70%); opacity:.10; transition:opacity var(--dur) }
-.pillar-card:hover{ transform:translateY(-4px); border-color:var(--border-2); box-shadow:var(--shadow-lg) }
-.pillar-card:hover::after{ opacity:.2 }
-.pillar-card--blood{ --pc:var(--blood) } .pillar-card--coag{ --pc:var(--coag) } .pillar-card--aph{ --pc:var(--aph) }
-.pillar-num{ font-family:var(--mono); font-size:.78rem; font-weight:700; color:var(--pc); letter-spacing:.1em }
-.pillar-card h3{ font-size:1.12rem }
-.pillar-card p{ font-size:.88rem; color:var(--muted); flex:1 }
-.pillar-go{ font-size:.82rem; font-weight:600; color:var(--pc); margin-top:4px }
+.pillar-card{ position:relative; display:flex; flex-direction:column; gap:10px; padding:26px; border-radius:var(--radius);
+  background:var(--surface); border:1px solid var(--border);
+  transition:transform var(--dur) var(--ease-out), border-color var(--dur), box-shadow var(--dur) }
+.pillar-card:hover{ transform:translateY(-3px); border-color:var(--border-2); box-shadow:var(--shadow-hover) }
+.pillar-num{ font-family:var(--mono); font-size:.74rem; font-weight:500; color:var(--faint); letter-spacing:.04em }
+.pillar-card h3{ font-size:1.16rem; letter-spacing:-0.02em }
+.pillar-card p{ font-size:.9rem; color:var(--muted); flex:1; line-height:1.5 }
+.pillar-go{ font-size:.84rem; font-weight:550; color:var(--accent); margin-top:4px; transition:gap var(--dur-fast) }
+.pillar-card:hover .pillar-go{ text-decoration:none }
 
-.how-row{ display:grid; grid-template-columns:1.2fr 1fr; gap:16px; margin-top:24px }
-.how-card h4{ font-size:1rem; margin-bottom:6px }
-.how-card--accent{ background:linear-gradient(160deg,var(--accent-soft),transparent), var(--surface) }
-.big-quote{ font-size:1.12rem; font-weight:600; line-height:1.4; margin:6px 0 12px }
+.how-row{ display:grid; grid-template-columns:1.15fr 1fr; gap:16px; margin-top:24px }
+.how-card h4{ font-size:1rem; margin-bottom:8px; font-weight:600 }
+.how-card--accent{ background:var(--bg-2); border-color:var(--hair) }
+.big-quote{ font-size:1.18rem; font-weight:500; line-height:1.4; margin:6px 0 14px; letter-spacing:-0.02em }
 .big-quote em{ color:var(--accent); font-style:normal }
-.legend{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px }
+.legend{ display:flex; flex-wrap:wrap; gap:7px; margin-top:14px }
 
 /* ============================================================
-   TAGS + CALLOUTS
+   TAGS + CALLOUTS  (muted pastel labels, quiet boxes)
    ============================================================ */
-.tag{ display:inline-flex; align-items:center; gap:5px; font-size:.68rem; font-weight:600; padding:3px 9px;
-  border-radius:99px; letter-spacing:.01em; white-space:nowrap; border:1px solid transparent }
-.tag::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor }
-.tag--why{ color:var(--info); background:oklch(70% .13 244/.13); border-color:oklch(70% .13 244/.25) }
-.tag--pattern{ color:var(--accent); background:var(--accent-soft); border-color:var(--accent-soft) }
-.tag--next{ color:var(--good); background:oklch(72% .16 155/.13); border-color:oklch(72% .16 155/.25) }
-.tag--pearl{ color:var(--coag); background:oklch(74% .15 72/.14); border-color:oklch(74% .15 72/.26) }
-.tag--adv{ color:var(--aph); background:oklch(70% .13 196/.14); border-color:oklch(70% .13 196/.26) }
-.tag--pitfall{ color:var(--bad); background:oklch(64% .21 22/.13); border-color:oklch(64% .21 22/.25) }
-.tag--dnc{ color:var(--warn); background:oklch(76% .15 78/.14); border-color:oklch(76% .15 78/.26) }
+.tag{ display:inline-flex; align-items:center; font-size:.62rem; font-weight:600; padding:3px 9px; border-radius:99px;
+  letter-spacing:.07em; text-transform:uppercase; white-space:nowrap;
+  color:var(--c,var(--muted)); background:color-mix(in srgb, var(--c,var(--muted)) 13%, transparent) }
+.tag--why{ --c:var(--info) } .tag--pattern{ --c:var(--accent) } .tag--next{ --c:var(--good) }
+.tag--pearl{ --c:var(--coag) } .tag--adv{ --c:var(--aph) } .tag--pitfall{ --c:var(--bad) } .tag--dnc{ --c:var(--warn) }
 
-.callout{ --c:var(--accent); position:relative; padding:13px 15px 13px 16px; border-radius:var(--radius-sm);
-  background:color-mix(in oklch, var(--c) 8%, var(--surface)); border:1px solid color-mix(in oklch,var(--c) 22%, transparent);
-  margin-top:12px; font-size:.9rem }
-.callout::before{ content:""; position:absolute; left:0; top:10px; bottom:10px; width:3px; border-radius:2px; background:var(--c) }
-.callout > .tag{ margin-bottom:6px }
-.callout p{ color:var(--muted) } .callout strong{ color:var(--text) }
+.callout{ --c:var(--accent); padding:14px 16px; border-radius:var(--radius-sm); background:var(--bg-2);
+  border:1px solid var(--hair); border-left:2px solid var(--c); margin-top:12px; font-size:.9rem }
+.callout > .tag{ margin-bottom:7px }
+.callout p{ color:var(--muted); line-height:1.5 } .callout strong{ color:var(--text) }
 .callout--why{ --c:var(--info) } .callout--pattern{ --c:var(--accent) } .callout--next{ --c:var(--good) }
 .callout--pearl{ --c:var(--coag) } .callout--adv{ --c:var(--aph) } .callout--pitfall{ --c:var(--bad) } .callout--dnc{ --c:var(--warn) }
 
 /* ============================================================
-   TEACHING CARDS
+   TEACHING CARDS  (icon-free, text-forward)
    ============================================================ */
-.tcard{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px;
-  box-shadow:var(--shadow); transition:border-color var(--dur), transform var(--dur) }
-.tcard:hover{ border-color:var(--border-2) }
-.tcard-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px }
-.tcard-ico{ width:34px; height:34px; flex:0 0 auto; border-radius:9px; display:grid; place-items:center; font-size:1.1rem;
-  background:var(--surface-3); border:1px solid var(--border) }
-.tcard h4{ font-size:1rem } .tcard .sub{ font-size:.74rem; color:var(--faint) }
-.tcard-body{ font-size:.88rem; color:var(--muted); margin-top:4px }
-.tcard-body p + p{ margin-top:8px }
-.spec-row{ display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-top:1px dashed var(--border);
-  font-size:.84rem }
+.tcard{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px;
+  transition:border-color var(--dur), box-shadow var(--dur), transform var(--dur) }
+.tcard:hover{ border-color:var(--border-2); box-shadow:var(--shadow-hover) }
+.tcard-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:8px; flex-wrap:wrap }
+.tcard-ico{ display:none }
+.tcard h4{ font-size:1rem; font-weight:600; letter-spacing:-0.02em } .tcard .sub{ font-size:.72rem; color:var(--faint) }
+.tcard-body{ font-size:.89rem; color:var(--muted); margin-top:2px; line-height:1.55 }
+.tcard-body p + p{ margin-top:9px }
+.spec-row{ display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-top:1px solid var(--hair); font-size:.84rem }
 .spec-row:first-of-type{ border-top:none }
-.spec-row span:first-child{ color:var(--faint) } .spec-row span:last-child{ font-weight:600; text-align:right }
+.spec-row span:first-child{ color:var(--faint) } .spec-row span:last-child{ font-weight:550; text-align:right; color:var(--text) }
 .dose{ font-family:var(--mono); font-size:.82rem }
 
 /* ============================================================
    COMPARISON TABLE
    ============================================================ */
-.table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
-  background:var(--surface); -webkit-overflow-scrolling:touch }
+.table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); -webkit-overflow-scrolling:touch }
 table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640px }
-.cmp th,.cmp td{ padding:11px 14px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top }
-.cmp thead th{ position:sticky; top:0; background:var(--surface-3); font-size:.72rem; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--muted); z-index:1 }
+.cmp th,.cmp td{ padding:12px 16px; text-align:left; border-bottom:1px solid var(--hair); vertical-align:top }
+.cmp tbody tr:last-child td{ border-bottom:none }
+.cmp thead th{ position:sticky; top:0; background:var(--bg-2); font-size:.66rem; text-transform:uppercase;
+  letter-spacing:.07em; color:var(--faint); font-weight:600; z-index:1 }
 .cmp tbody tr:hover{ background:var(--surface-2) }
 .cmp td:first-child{ font-weight:600; color:var(--text) }
-.cmp .pill{ font-family:var(--mono); font-size:.76rem; padding:2px 7px; border-radius:6px; background:var(--surface-3); white-space:nowrap }
+.cmp .pill{ font-family:var(--mono); font-size:.74rem; padding:2px 8px; border-radius:6px; background:var(--surface-2); border:1px solid var(--hair); white-space:nowrap }
 
 /* ============================================================
-   ACCORDION
+   ACCORDION  (stripped — hairline rows, +/- toggle)
    ============================================================ */
-.acc{ border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:var(--surface); box-shadow:var(--shadow) }
-.acc + .acc{ margin-top:10px }
-.acc summary{ list-style:none; cursor:pointer; padding:14px 18px; display:flex; align-items:center; gap:12px;
-  font-weight:600; font-size:.92rem; transition:background var(--dur-fast) }
+.acc{ border-bottom:1px solid var(--hair) }
+.acc summary{ list-style:none; cursor:pointer; padding:16px 4px; display:flex; align-items:center; gap:12px;
+  font-weight:550; font-size:.92rem; letter-spacing:-0.01em; transition:color var(--dur-fast) }
 .acc summary::-webkit-details-marker{ display:none }
-.acc summary:hover{ background:var(--surface-2) }
-.acc .chev{ margin-left:auto; transition:transform var(--dur) var(--ease); color:var(--faint) }
-.acc[open] .chev{ transform:rotate(90deg) }
-.acc-body{ padding:0 18px 16px; font-size:.89rem; color:var(--muted) }
+.acc summary:hover{ color:var(--accent) }
+.acc .chev{ margin-left:auto; color:var(--faint); font-size:1.2rem; line-height:1; width:16px; text-align:center; transition:transform var(--dur) var(--ease) }
+.acc .chev::before{ content:"+" }
+.acc[open] .chev::before{ content:"\2212" }
+.acc[open] .chev{ color:var(--accent) }
+.acc-body{ padding:0 4px 18px; font-size:.89rem; color:var(--muted); line-height:1.55 }
 .acc-body p + p{ margin-top:9px }
-.acc .dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto }
+.acc .dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto }
 
 /* ============================================================
    TABS
    ============================================================ */
-.tabs{ display:flex; gap:6px; padding:5px; background:var(--surface-2); border:1px solid var(--border);
-  border-radius:12px; margin-bottom:16px; flex-wrap:wrap }
-.tab{ flex:1; min-width:120px; padding:9px 12px; border-radius:8px; font-size:.84rem; font-weight:600; cursor:pointer;
+.tabs{ display:flex; gap:4px; padding:4px; background:var(--surface-2); border:1px solid var(--hair); border-radius:11px; margin-bottom:18px; flex-wrap:wrap }
+.tab{ flex:1; min-width:110px; padding:8px 12px; border-radius:8px; font-size:.83rem; font-weight:550; cursor:pointer;
   border:none; background:transparent; color:var(--muted); font-family:inherit; transition:all var(--dur-fast) }
 .tab:hover{ color:var(--text) }
 .tab.is-active{ background:var(--surface); color:var(--text); box-shadow:var(--shadow) }
-.tabpane{ display:none; animation:fade .4s var(--ease) }
+.tabpane{ display:none; animation:fade .4s var(--ease-out) }
 .tabpane.is-active{ display:block }
 @keyframes fade{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
 
@@ -354,144 +340,130 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
    ALGORITHM
    ============================================================ */
 .algo{ display:flex; flex-direction:column; gap:10px; margin-top:8px }
-.algo-node{ display:flex; gap:14px; align-items:flex-start; padding:14px 16px; border-radius:var(--radius);
-  background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow); position:relative }
-.algo-step{ font-family:var(--mono); font-size:.74rem; font-weight:700; color:var(--on-accent);
-  background:var(--accent); width:26px; height:26px; flex:0 0 auto; border-radius:8px; display:grid; place-items:center }
-.algo-node h5{ margin:0 0 3px; font-size:.94rem }
-.algo-node p{ font-size:.85rem; color:var(--muted) }
+.algo-node{ display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-radius:var(--radius);
+  background:var(--surface); border:1px solid var(--border) }
+.algo-step{ font-family:var(--mono); font-size:.74rem; font-weight:600; color:var(--on-accent); background:var(--accent);
+  width:25px; height:25px; flex:0 0 auto; border-radius:7px; display:grid; place-items:center }
+.algo-node h5{ margin:0 0 4px; font-size:.94rem; font-weight:600 }
+.algo-node p{ font-size:.85rem; color:var(--muted); line-height:1.5 }
 .algo-branch{ display:grid; grid-template-columns:1fr 1fr; gap:10px }
-.algo-branch .algo-node{ background:var(--surface-2) }
-.branch-tag{ font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px; display:block }
+.algo-branch .algo-node{ background:var(--bg-2) }
+.branch-tag{ font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; display:block }
 .b-corrects .branch-tag{ color:var(--good) } .b-inhibits .branch-tag{ color:var(--bad) }
 
 /* ============================================================
    QUIZ
    ============================================================ */
-.quiz-toolbar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px }
-.filter-chips{ display:flex; gap:7px; flex-wrap:wrap }
-.chip{ padding:7px 14px; border-radius:99px; font-size:.8rem; font-weight:600; cursor:pointer; font-family:inherit;
-  background:var(--surface-2); border:1px solid var(--border); color:var(--muted); transition:all var(--dur-fast) }
+.quiz-toolbar{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:18px }
+.filter-chips{ display:flex; gap:6px; flex-wrap:wrap }
+.chip{ padding:7px 15px; border-radius:99px; font-size:.8rem; font-weight:550; cursor:pointer; font-family:inherit;
+  background:transparent; border:1px solid var(--border); color:var(--muted); transition:all var(--dur-fast) }
 .chip:hover{ color:var(--text); border-color:var(--border-2) }
-.chip.is-active{ background:var(--accent); border-color:var(--accent); color:var(--on-accent) }
+.chip.is-active{ background:var(--text); border-color:var(--text); color:var(--bg) }
 .scoreboard{ margin-left:auto; display:flex; align-items:center; gap:14px; font-size:.82rem; color:var(--muted) }
-.scoreboard b{ color:var(--text); font-family:var(--mono) }
+.scoreboard b{ color:var(--text); font-family:var(--mono); font-weight:600 }
 
-.q{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px;
-  box-shadow:var(--shadow); margin-bottom:14px }
-.q-meta{ display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap }
-.q-diff{ font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:2px 8px; border-radius:99px }
-.q-diff.easy{ color:var(--good); background:oklch(72% .16 155/.14) }
-.q-diff.moderate{ color:var(--coag); background:oklch(74% .15 72/.16) }
-.q-diff.integrative{ color:var(--bad); background:oklch(64% .21 22/.14) }
-.q-pillar{ font-size:.66rem; font-weight:600; color:var(--faint); text-transform:uppercase; letter-spacing:.06em }
-.q-stem{ font-size:.95rem; font-weight:500; margin-bottom:14px; line-height:1.5 }
+.q{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; margin-bottom:14px }
+.q-meta{ display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap }
+.q-diff{ font-size:.62rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em; padding:2px 8px; border-radius:99px;
+  color:var(--c,var(--muted)); background:color-mix(in srgb, var(--c,var(--muted)) 13%, transparent) }
+.q-diff.easy{ --c:var(--good) } .q-diff.moderate{ --c:var(--coag) } .q-diff.integrative{ --c:var(--bad) }
+.q-pillar{ font-size:.64rem; font-weight:600; color:var(--faint); text-transform:uppercase; letter-spacing:.07em }
+.q-stem{ font-size:.95rem; font-weight:450; margin-bottom:14px; line-height:1.55 }
 .q-opts{ display:flex; flex-direction:column; gap:8px }
-.opt{ text-align:left; padding:11px 14px; border-radius:10px; border:1px solid var(--border); background:var(--surface-2);
-  cursor:pointer; font-family:inherit; font-size:.88rem; color:var(--text); display:flex; gap:11px; align-items:flex-start;
+.opt{ text-align:left; padding:12px 15px; border-radius:10px; border:1px solid var(--border); background:var(--surface);
+  cursor:pointer; font-family:inherit; font-size:.88rem; color:var(--text); display:flex; gap:12px; align-items:flex-start;
   transition:border-color var(--dur-fast), background var(--dur-fast) }
-.opt:hover:not(:disabled){ border-color:var(--border-2); background:var(--surface-3) }
+.opt:hover:not(:disabled){ border-color:var(--border-2); background:var(--surface-2) }
 .opt:disabled{ cursor:default }
-.opt-key{ font-family:var(--mono); font-weight:700; font-size:.78rem; width:20px; height:20px; flex:0 0 auto;
-  border-radius:6px; display:grid; place-items:center; background:var(--surface-3); color:var(--muted) }
-.opt.is-correct{ border-color:var(--good); background:oklch(72% .16 155/.12) }
-.opt.is-correct .opt-key{ background:var(--good); color:#062 }
-.opt.is-wrong{ border-color:var(--bad); background:oklch(64% .21 22/.10) }
-.opt.is-wrong .opt-key{ background:var(--bad); color:#fff }
-.opt-mark{ margin-left:auto; font-weight:700 }
-.q-explain{ margin-top:14px; border-top:1px solid var(--border); padding-top:13px; font-size:.87rem;
-  display:none; animation:fade .4s var(--ease) }
+.opt-key{ font-family:var(--mono); font-weight:600; font-size:.76rem; width:20px; height:20px; flex:0 0 auto;
+  border-radius:6px; display:grid; place-items:center; background:var(--surface-2); border:1px solid var(--hair); color:var(--muted) }
+.opt.is-correct{ border-color:var(--good); background:color-mix(in srgb, var(--good) 9%, transparent) }
+.opt.is-correct .opt-key{ background:var(--good); border-color:var(--good); color:#fff }
+.opt.is-wrong{ border-color:var(--bad); background:color-mix(in srgb, var(--bad) 8%, transparent) }
+.opt.is-wrong .opt-key{ background:var(--bad); border-color:var(--bad); color:#fff }
+.opt-mark{ margin-left:auto; font-weight:600 }
+.q-explain{ margin-top:14px; border-top:1px solid var(--hair); padding-top:14px; font-size:.87rem; display:none; animation:fade .4s var(--ease-out) }
 .q-explain.show{ display:block }
-.q-explain .verdict{ font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:7px }
+.q-explain .verdict{ font-weight:600; margin-bottom:7px; display:flex; align-items:center; gap:7px }
 .q-explain .verdict.ok{ color:var(--good) } .q-explain .verdict.no{ color:var(--bad) }
-.q-explain p{ color:var(--muted); margin-bottom:8px }
+.q-explain p{ color:var(--muted); margin-bottom:9px; line-height:1.5 }
 .q-explain .why-wrong{ font-size:.82rem; color:var(--faint) }
 .quiz-empty{ text-align:center; padding:46px 20px; color:var(--faint) }
 
 /* ============================================================
    CASE LAB
    ============================================================ */
-.case{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
-  overflow:hidden; margin-bottom:16px }
-.case-head{ padding:16px 20px; border-bottom:1px solid var(--border); display:flex; gap:13px; align-items:flex-start }
-.case-tag{ font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 9px;
-  border-radius:99px; flex:0 0 auto; margin-top:2px }
-.case-tag.blood{ color:var(--blood); background:oklch(64% .2 18/.14) }
-.case-tag.coag{ color:var(--coag); background:oklch(74% .15 72/.16) }
-.case-tag.aph{ color:var(--aph); background:oklch(70% .13 196/.16) }
-.case-tag.mixed{ color:var(--accent); background:var(--accent-soft) }
-.case-head h4{ font-size:1rem; margin-bottom:3px } .case-head p{ font-size:.85rem; color:var(--muted) }
-.case-body{ padding:8px 20px 18px }
-.case-step{ padding:14px 0; border-bottom:1px dashed var(--border) }
+.case{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:16px }
+.case-head{ padding:18px 22px; border-bottom:1px solid var(--hair); display:flex; gap:13px; align-items:flex-start }
+.case-tag{ font-size:.62rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em; padding:3px 9px; border-radius:99px;
+  flex:0 0 auto; margin-top:2px; color:var(--c,var(--muted)); background:color-mix(in srgb, var(--c,var(--muted)) 13%, transparent) }
+.case-tag.blood{ --c:var(--blood) } .case-tag.coag{ --c:var(--coag) } .case-tag.aph{ --c:var(--aph) } .case-tag.mixed{ --c:var(--accent) }
+.case-head h4{ font-size:1.02rem; margin-bottom:4px; font-weight:600 } .case-head p{ font-size:.85rem; color:var(--muted); line-height:1.5 }
+.case-body{ padding:8px 22px 20px }
+.case-step{ padding:16px 0; border-bottom:1px solid var(--hair) }
 .case-step:last-child{ border-bottom:none }
-.case-step .label{ font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--accent); margin-bottom:5px }
-.case-step .prompt{ font-size:.92rem; font-weight:500 }
-.case-reveal{ margin-top:10px; font-size:.87rem; color:var(--muted); background:var(--surface-2);
-  border:1px solid var(--border); border-radius:10px; padding:0 14px; max-height:0; overflow:hidden;
-  opacity:0; transition:max-height .45s var(--ease), opacity .35s, padding .45s var(--ease) }
-.case-reveal.show{ max-height:600px; opacity:1; padding:13px 14px; margin-top:10px }
+.case-step .label{ font-size:.66rem; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--accent); margin-bottom:6px }
+.case-step .prompt{ font-size:.92rem; font-weight:450; line-height:1.5 }
+.case-reveal{ margin-top:10px; font-size:.87rem; color:var(--muted); background:var(--bg-2); border:1px solid var(--hair);
+  border-radius:10px; padding:0 15px; max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .45s var(--ease), opacity .35s, padding .45s var(--ease); line-height:1.55 }
+.case-reveal.show{ max-height:640px; opacity:1; padding:14px 15px; margin-top:10px }
 .case-reveal strong{ color:var(--text) }
 .case-controls{ margin-top:14px; display:flex; gap:10px; flex-wrap:wrap }
-
-/* lab values strip */
 .labs{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 }
-.lab{ font-family:var(--mono); font-size:.78rem; padding:5px 10px; border-radius:8px; background:var(--surface-3);
-  border:1px solid var(--border); display:flex; gap:7px; align-items:baseline }
+.lab{ font-family:var(--mono); font-size:.78rem; padding:5px 10px; border-radius:8px; background:var(--bg-2); border:1px solid var(--hair); display:flex; gap:7px; align-items:baseline }
 .lab .k{ color:var(--faint) } .lab .v{ font-weight:600 }
 .lab.hi .v{ color:var(--bad) } .lab.lo .v{ color:var(--info) } .lab.crit .v{ color:var(--warn) }
 
 /* ============================================================
    GLOSSARY
    ============================================================ */
-.search{ display:flex; align-items:center; gap:10px; padding:11px 16px; border-radius:12px; background:var(--surface);
-  border:1px solid var(--border); box-shadow:var(--shadow); margin-bottom:16px }
+.search{ display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px; background:var(--surface); border:1px solid var(--border); margin-bottom:18px }
 .search input{ flex:1; border:none; background:transparent; color:var(--text); font-family:inherit; font-size:.92rem; outline:none }
 .search input::placeholder{ color:var(--faint) }
 .search svg{ color:var(--faint); flex:0 0 auto }
-.gloss-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px }
-.gloss-item{ padding:14px 16px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--border);
+.gloss-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px }
+.gloss-item{ padding:16px 18px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--border);
   transition:border-color var(--dur-fast), transform var(--dur-fast) }
 .gloss-item:hover{ border-color:var(--border-2); transform:translateY(-2px) }
-.gloss-item .term{ font-weight:700; font-size:.9rem; display:flex; align-items:center; gap:8px }
-.gloss-item .abbr{ font-family:var(--mono); font-size:.72rem; color:var(--accent); background:var(--accent-soft); padding:1px 7px; border-radius:6px }
-.gloss-item .def{ font-size:.84rem; color:var(--muted); margin-top:5px }
-.gloss-item.mustknow{ border-left:3px solid var(--coag) }
+.gloss-item .term{ font-weight:600; font-size:.9rem; display:flex; align-items:center; gap:8px; letter-spacing:-0.01em }
+.gloss-item .abbr{ font-family:var(--mono); font-size:.7rem; color:var(--accent); background:var(--accent-soft); padding:1px 7px; border-radius:5px }
+.gloss-item .def{ font-size:.84rem; color:var(--muted); margin-top:6px; line-height:1.5 }
+.gloss-item.mustknow{ border-left:2px solid var(--accent) }
 .gloss-empty{ grid-column:1/-1; text-align:center; padding:40px; color:var(--faint) }
 
 /* ============================================================
    RECAP
    ============================================================ */
 .recap-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:18px; align-items:start }
-.takehome{ counter-reset:th }
-.takehome li{ list-style:none; position:relative; padding:13px 16px 13px 50px; margin-bottom:9px; border-radius:var(--radius-sm);
-  background:var(--surface); border:1px solid var(--border); font-size:.9rem; box-shadow:var(--shadow) }
-.takehome li::before{ counter-increment:th; content:counter(th); position:absolute; left:13px; top:12px; width:24px; height:24px;
-  border-radius:7px; background:var(--accent-soft); color:var(--accent); font-family:var(--mono); font-weight:700; font-size:.76rem;
-  display:grid; place-items:center }
+.takehome{ counter-reset:th; padding:0; margin:0 }
+.takehome li{ list-style:none; position:relative; padding:14px 16px 14px 52px; margin-bottom:9px; border-radius:var(--radius-sm);
+  background:var(--surface); border:1px solid var(--border); font-size:.9rem; line-height:1.5 }
+.takehome li::before{ counter-increment:th; content:counter(th,decimal-leading-zero); position:absolute; left:16px; top:14px;
+  font-family:var(--mono); font-weight:500; font-size:.78rem; color:var(--accent) }
 .takehome li strong{ color:var(--text) }
 .recap-side{ display:flex; flex-direction:column; gap:16px }
-.rounds-list{ list-style:none; padding:0; margin:8px 0 0; display:flex; flex-direction:column; gap:9px }
-.rounds-list li{ font-size:.86rem; color:var(--muted); padding-left:20px; position:relative }
-.rounds-list li::before{ content:"“"; position:absolute; left:0; top:-2px; color:var(--accent); font-size:1.1rem; font-weight:700 }
+.rounds-list{ list-style:none; padding:0; margin:8px 0 0; display:flex; flex-direction:column; gap:11px }
+.rounds-list li{ font-size:.86rem; color:var(--muted); padding-left:16px; position:relative; line-height:1.45 }
+.rounds-list li::before{ content:""; position:absolute; left:0; top:.55em; width:5px; height:5px; border-radius:50%; background:var(--accent) }
 .ask-list{ list-style:none; padding:0; margin:8px 0 0; display:flex; flex-direction:column; gap:8px }
-.ask-list li{ font-size:.86rem; padding:9px 12px; border-radius:9px; background:var(--surface-2); border:1px solid var(--border); color:var(--muted) }
+.ask-list li{ font-size:.86rem; padding:10px 13px; border-radius:9px; background:var(--bg-2); border:1px solid var(--hair); color:var(--muted); line-height:1.45 }
 
 /* ============================================================
    FOOTER + misc
    ============================================================ */
-.foot{ max-width:var(--maxw); margin:0 auto; padding:30px clamp(16px,3vw,34px) 60px; border-top:1px solid var(--border) }
-.foot p{ font-size:.82rem; color:var(--faint); margin-bottom:8px }
+.foot{ max-width:var(--maxw); margin:0 auto; padding:32px clamp(18px,3vw,40px) 64px; border-top:1px solid var(--hair) }
+.foot p{ font-size:.82rem; color:var(--faint); margin-bottom:8px; line-height:1.5 }
 .foot p:first-child{ color:var(--muted) }
-
-.to-top{ position:fixed; right:22px; bottom:22px; width:42px; height:42px; border-radius:12px; z-index:50;
-  background:var(--accent); color:var(--on-accent); border:none; cursor:pointer; font-size:1.1rem; box-shadow:var(--shadow-lg);
-  transition:transform var(--dur-fast), opacity var(--dur) }
-.to-top:hover{ transform:translateY(-3px) }
+.to-top{ position:fixed; right:22px; bottom:22px; width:42px; height:42px; border-radius:11px; z-index:50;
+  background:var(--surface); color:var(--text); border:1px solid var(--border-2); cursor:pointer; font-size:1.1rem;
+  box-shadow:var(--shadow-lg); transition:transform var(--dur-fast), color var(--dur-fast) }
+.to-top:hover{ transform:translateY(-3px); color:var(--accent) }
 .to-top[hidden]{ display:none }
-
 .stack{ display:flex; flex-direction:column; gap:16px }
-.mt24{ margin-top:24px } .mt16{ margin-top:16px } .mb8{ margin-bottom:8px }
-.lead-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px }
+.mt24{ margin-top:26px } .mt16{ margin-top:16px } .mb8{ margin-bottom:8px }
+.lead-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px }
 
 /* ============================================================
    RESPONSIVE
@@ -499,18 +471,17 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
 @media (max-width:1024px){
   :root{ --sb:0px }
   .menu-btn{ display:grid }
-  .sidebar{ position:fixed; top:0; bottom:0; left:0; width:264px; transform:translateX(-100%);
+  .sidebar{ position:fixed; top:0; bottom:0; left:0; width:272px; transform:translateX(-100%);
     transition:transform var(--dur) var(--ease); box-shadow:var(--shadow-lg) }
   body.nav-open .sidebar{ transform:none }
   .topbar{ grid-column:1 / -1 } .main{ grid-column:1 / -1 }
-  body.nav-open::after{ content:""; position:fixed; inset:0; background:oklch(0% 0 0/.5); z-index:35 }
+  body.nav-open::after{ content:""; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:35 }
 }
 @media (max-width:760px){
   .grid-3{ grid-template-columns:1fr } .how-row{ grid-template-columns:1fr }
-  .hero-stats{ grid-template-columns:repeat(2,1fr); gap:18px }
+  .hero-stats{ grid-template-columns:repeat(2,1fr); gap:22px }
   .recap-grid{ grid-template-columns:1fr } .algo-branch{ grid-template-columns:1fr }
   .progress-pill-text{ display:none }
-  .section{ padding-left:18px; padding-right:18px }
 }
 
 /* ============================================================
@@ -520,13 +491,12 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
   *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important;
     transition-duration:.001ms !important; scroll-behavior:auto !important }
   .reveal{ opacity:1; transform:none }
+  body::before{ animation:none }
 }
 </style>
 </head>
 <body>
-<canvas id="bg" aria-hidden="true"></canvas>
 <div class="scroll-progress" aria-hidden="true"><span id="scrollbar"></span></div>
-
 <a class="skip-link" href="#main">Skip to content</a>
 
 <div class="app">
@@ -534,7 +504,7 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
   <aside class="sidebar" id="sidebar" aria-label="Primary">
     <div class="brand">
       <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="26" height="26"><path d="M16 2.5C16 2.5 6 13 6 20a10 10 0 0 0 20 0c0-7-10-17.5-10-17.5Z" fill="url(#dropg)"/><defs><linearGradient id="dropg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b81"/><stop offset="1" stop-color="#c81d3c"/></linearGradient></defs></svg>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c0 0-6 6.4-6 10.5a6 6 0 0 0 12 0c0-4.1-6-10.5-6-10.5Z"/></svg>
       </div>
       <div class="brand-text">
         <strong>Transfusion&nbsp;Medicine</strong>
@@ -543,16 +513,16 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
     </div>
 
     <nav class="nav" aria-label="Sections">
-      <a class="nav-item is-active" href="#start" data-nav="start"><span class="nav-ico">◆</span>Start here</a>
+      <a class="nav-item is-active" href="#start" data-nav="start"><span class="nav-ico">●</span>Start here</a>
       <p class="nav-group">The three pillars</p>
       <a class="nav-item" href="#bloodbank" data-nav="bloodbank"><span class="nav-ico nav-ico--blood">●</span>Blood bank</a>
       <a class="nav-item" href="#coagulation" data-nav="coagulation"><span class="nav-ico nav-ico--coag">●</span>Coagulation</a>
       <a class="nav-item" href="#apheresis" data-nav="apheresis"><span class="nav-ico nav-ico--aph">●</span>Apheresis</a>
       <p class="nav-group">Practice &amp; reference</p>
-      <a class="nav-item" href="#cases" data-nav="cases"><span class="nav-ico">◇</span>Case lab</a>
-      <a class="nav-item" href="#quiz" data-nav="quiz"><span class="nav-ico">◇</span>Quiz center</a>
-      <a class="nav-item" href="#glossary" data-nav="glossary"><span class="nav-ico">◇</span>Glossary</a>
-      <a class="nav-item" href="#recap" data-nav="recap"><span class="nav-ico">◇</span>Final recap</a>
+      <a class="nav-item" href="#cases" data-nav="cases"><span class="nav-ico">○</span>Case lab</a>
+      <a class="nav-item" href="#quiz" data-nav="quiz"><span class="nav-ico">○</span>Quiz center</a>
+      <a class="nav-item" href="#glossary" data-nav="glossary"><span class="nav-ico">○</span>Glossary</a>
+      <a class="nav-item" href="#recap" data-nav="recap"><span class="nav-ico">○</span>Final recap</a>
     </nav>
 
     <div class="sidebar-foot">
@@ -566,7 +536,7 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
   <!-- ============ HEADER ============ -->
   <header class="topbar">
     <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
     <div class="crumb">
       <span class="crumb-kicker">Now viewing</span>
@@ -582,8 +552,8 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         <div class="progress-pill-text"><strong id="progPct">0%</strong><span id="progLabel">0 / 0 answered</span></div>
       </div>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle light and dark theme">
-        <svg class="ico-sun" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <svg class="ico-moon" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
       </button>
     </div>
   </header>
@@ -594,12 +564,11 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
     <!-- ===== START HERE ===== -->
     <section id="start" class="section" data-section="Start here" aria-labelledby="start-h">
       <div class="hero reveal">
-        <div class="hero-glow" aria-hidden="true"></div>
         <span class="kicker">Pathology · Transfusion Medicine · 1-day rotation</span>
         <h1 id="start-h" class="hero-title">The transfusion service, decoded in a day.</h1>
         <p class="hero-lede">Welcome, <strong>Chloe</strong> &amp; <strong>Matt</strong>. This is a working dashboard, not a textbook — three pillars, real cases, and quick checks designed to make you <em>safe and useful</em> on service by this afternoon.</p>
         <div class="hero-actions">
-          <a class="btn btn--primary" href="#bloodbank">Begin with the blood bank →</a>
+          <a class="btn btn--primary" href="#bloodbank">Begin with the blood bank</a>
           <a class="btn btn--ghost" href="#quiz">Jump to quiz center</a>
         </div>
         <dl class="hero-stats">
@@ -611,19 +580,19 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       </div>
 
       <div class="grid-3 reveal">
-        <a class="pillar-card pillar-card--blood" href="#bloodbank">
+        <a class="pillar-card" href="#bloodbank">
           <span class="pillar-num">01</span>
           <h3>Blood components &amp; blood bank</h3>
           <p>What each product does, who it’s for, how compatibility works, and how to react when a transfusion goes wrong.</p>
           <span class="pillar-go">Open pillar →</span>
         </a>
-        <a class="pillar-card pillar-card--coag" href="#coagulation">
+        <a class="pillar-card" href="#coagulation">
           <span class="pillar-num">02</span>
           <h3>Coagulation testing</h3>
           <p>A reusable way to think: bleeding vs clotting, screening vs special tests, and a clean PT/aPTT algorithm.</p>
           <span class="pillar-go">Open pillar →</span>
         </a>
-        <a class="pillar-card pillar-card--aph" href="#apheresis">
+        <a class="pillar-card" href="#apheresis">
           <span class="pillar-num">03</span>
           <h3>Apheresis medicine</h3>
           <p>The consult service: what we remove or exchange, the conditions that need it, and TTP as the can’t-miss emergency.</p>
@@ -667,14 +636,14 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
 
       <div class="grid-2 reveal">
         <div class="tcard">
-          <div class="tcard-head"><span class="tcard-ico">🏦</span><div><h4>What the blood bank actually does</h4><span class="sub">Your mental model</span></div></div>
+          <div class="tcard-head"><div><h4>What the blood bank actually does</h4><span class="sub">Your mental model</span></div></div>
           <div class="tcard-body">
             <p>It is a <strong>safety and matching service</strong>. Before most transfusions it confirms the patient’s blood type and screens their plasma for antibodies that could destroy donor red cells — then issues compatible units and watches for reactions.</p>
             <div class="callout callout--why"><span class="tag tag--why">Why it matters</span><p>Giving incompatible red cells can cause fatal hemolysis. Almost every safe transfusion rests on one boring, vital step: correct patient identification.</p></div>
           </div>
         </div>
         <div class="tcard">
-          <div class="tcard-head"><span class="tcard-ico">🩸</span><div><h4>The four products you must know</h4><span class="sub">Everything else is a variation</span></div></div>
+          <div class="tcard-head"><div><h4>The four products you must know</h4><span class="sub">Everything else is a variation</span></div></div>
           <div class="tcard-body">
             <p>Whole blood is almost always separated into components so each patient gets only what they need:</p>
             <div class="spec-row"><span>Red cells (pRBC)</span><span>carry oxygen</span></div>
@@ -685,7 +654,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </div>
       </div>
 
-      <!-- ABO / Rh -->
       <h3 class="mt24 reveal">ABO &amp; Rh — the logic, not the memorization</h3>
       <p class="section-sub reveal">You make antibodies against the ABO antigens you <em>lack</em> — automatically, from infancy. That single fact drives all red-cell compatibility.</p>
       <div class="surface mt16 reveal">
@@ -719,21 +687,19 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </div>
       </div>
 
-      <!-- Ordering -->
       <h3 class="mt24 reveal">Ordering: type &amp; screen, crossmatch, emergency release</h3>
       <div class="grid-3 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">🔬</span><h4>Type &amp; screen</h4></div>
+        <div class="tcard"><div class="tcard-head"><h4>Type &amp; screen</h4></div>
           <div class="tcard-body"><p>Determine ABO/Rh and screen the patient’s plasma for unexpected antibodies. The default order when transfusion is <em>possible but not certain</em>. If the screen is negative, compatible blood can be released fast.</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">🧪</span><h4>Type &amp; crossmatch</h4></div>
+        <div class="tcard"><div class="tcard-head"><h4>Type &amp; crossmatch</h4></div>
           <div class="tcard-body"><p>Reserve specific units and test donor cells against patient plasma. Order when transfusion is <em>likely</em> (e.g., a bleeding patient or a procedure with expected loss). Units are held for that patient.</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">🚨</span><h4>Emergency release</h4></div>
+        <div class="tcard"><div class="tcard-head"><h4>Emergency release</h4></div>
           <div class="tcard-body"><p>No time to wait: issue <strong>O red cells</strong> (O-negative for women of child-bearing potential) and <strong>AB plasma</strong>, uncrossmatched. Lifesaving in the trauma bay; the lab catches up afterward.</p></div></div>
       </div>
 
-      <!-- Products -->
       <h3 class="mt24 reveal">The product guide</h3>
       <div class="grid-2 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--blood)">⬤</span><div><h4>Packed red blood cells (pRBC)</h4><span class="sub">Oxygen-carrying capacity</span></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Packed red blood cells (pRBC)</h4><span class="sub">Oxygen-carrying capacity</span></div></div>
           <div class="tcard-body">
             <div class="spec-row"><span>Contains</span><span>concentrated red cells, little plasma</span></div>
             <div class="spec-row"><span>Effect</span><span class="dose">1 unit ↑ Hgb ≈ 1 g/dL</span></div>
@@ -742,7 +708,7 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
             <div class="callout callout--pitfall"><span class="tag tag--pitfall">Pitfall</span><p>Don’t transfuse treatable iron deficiency or a stable, asymptomatic patient above threshold, and never use blood as a volume expander.</p></div>
             <div class="callout callout--pearl"><span class="tag tag--pearl">Student pearl</span><p>“Why give two when one will do?” Transfuse <strong>one unit, then reassess</strong>.</p></div>
           </div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--coag)">✦</span><div><h4>Platelets</h4><span class="sub">Primary hemostasis</span></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Platelets</h4><span class="sub">Primary hemostasis</span></div></div>
           <div class="tcard-body">
             <div class="spec-row"><span>One dose</span><span>1 apheresis unit ≈ pool of 4–6</span></div>
             <div class="spec-row"><span>Effect</span><span class="dose">↑ platelets ≈ 30–50 ×10⁹/L</span></div>
@@ -751,7 +717,7 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
             <div class="callout callout--pitfall"><span class="tag tag--pitfall">Pitfall</span><p>Avoid in <strong>TTP</strong> and <strong>HIT</strong> (can fuel thrombosis) unless there is life-threatening bleeding.</p></div>
             <div class="callout callout--adv"><span class="tag tag--adv">Advanced pearl</span><p>Stored at room temperature → platelets carry the <strong>highest bacterial-sepsis risk</strong> of any component.</p></div>
           </div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--info)">◈</span><div><h4>Fresh frozen plasma (FFP)</h4><span class="sub">Many factors at once</span></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Fresh frozen plasma (FFP)</h4><span class="sub">Many factors at once</span></div></div>
           <div class="tcard-body">
             <div class="spec-row"><span>Contains</span><span>all coagulation factors</span></div>
             <div class="spec-row"><span>Dose</span><span class="dose">10–15 mL/kg</span></div>
@@ -759,7 +725,7 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
             <p class="mt16"><strong>Use it for:</strong> bleeding with <em>multiple</em> factor deficiencies — DIC, liver disease, massive transfusion; warfarin reversal when PCC is unavailable.</p>
             <div class="callout callout--pitfall"><span class="tag tag--pitfall">Pitfall</span><p>Not a volume expander, and not the best warfarin reversal when <strong>4-factor PCC</strong> is available (PCC is faster and smaller volume). Don’t “fix” a mildly high INR in a non-bleeding patient before a low-risk procedure.</p></div>
           </div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--aph)">❖</span><div><h4>Cryoprecipitate</h4><span class="sub">The fibrinogen product</span></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Cryoprecipitate</h4><span class="sub">The fibrinogen product</span></div></div>
           <div class="tcard-body">
             <div class="spec-row"><span>Contains</span><span>fibrinogen, FVIII, vWF, FXIII</span></div>
             <div class="spec-row"><span>Trigger</span><span class="dose">fibrinogen &lt; 100–150 mg/dL</span></div>
@@ -769,20 +735,18 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
           </div></div>
       </div>
 
-      <!-- Modified products -->
       <h3 class="mt24 reveal">Modified products — who needs the “special” blood</h3>
       <div class="reveal">
-        <details class="acc"><summary><span class="dot" style="background:var(--accent)"></span>Leukoreduced — fewer white cells<span class="chev">›</span></summary>
+        <details class="acc"><summary><span class="dot" style="background:var(--accent)"></span>Leukoreduced — fewer white cells<span class="chev"></span></summary>
           <div class="acc-body"><p>Most blood is now leukoreduced by default. Reduces <strong>febrile non-hemolytic reactions</strong>, HLA alloimmunization, and CMV transmission.</p></div></details>
-        <details class="acc"><summary><span class="dot" style="background:var(--coag)"></span>Irradiated — prevents TA-GVHD<span class="chev">›</span></summary>
+        <details class="acc"><summary><span class="dot" style="background:var(--coag)"></span>Irradiated — prevents TA-GVHD<span class="chev"></span></summary>
           <div class="acc-body"><p>Gamma irradiation disables donor lymphocytes so they can’t attack the recipient. For the <strong>severely immunocompromised, neonates, and directed/relative donations</strong> (HLA-similar blood is paradoxically more dangerous here).</p></div></details>
-        <details class="acc"><summary><span class="dot" style="background:var(--info)"></span>CMV-safe — for CMV-negative at-risk patients<span class="chev">›</span></summary>
+        <details class="acc"><summary><span class="dot" style="background:var(--info)"></span>CMV-safe — for CMV-negative at-risk patients<span class="chev"></span></summary>
           <div class="acc-body"><p>CMV-seronegative units or leukoreduction protect CMV-negative pregnant patients, transplant recipients, and neonates from transfusion-transmitted CMV.</p></div></details>
-        <details class="acc"><summary><span class="dot" style="background:var(--aph)"></span>Washed — plasma proteins removed<span class="chev">›</span></summary>
+        <details class="acc"><summary><span class="dot" style="background:var(--aph)"></span>Washed — plasma proteins removed<span class="chev"></span></summary>
           <div class="acc-body"><p>Saline-washing removes plasma. For <strong>IgA-deficient patients with anti-IgA</strong> or severe recurrent allergic/anaphylactic reactions.</p></div></details>
       </div>
 
-      <!-- Comparison grid -->
       <h3 class="mt24 reveal">Product comparison at a glance</h3>
       <div class="table-wrap reveal">
         <table class="cmp">
@@ -796,7 +760,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </table>
       </div>
 
-      <!-- Reactions -->
       <h3 class="mt24 reveal">Transfusion reactions — recognize the buckets, act fast</h3>
       <div class="callout callout--next reveal"><span class="tag tag--next">What to do next — every reaction</span><p><strong>Stop the transfusion.</strong> Keep the line open with normal saline, check the patient and the unit identification, support vital signs, and call the blood bank. Stopping first is never wrong.</p></div>
       <div class="grid-auto reveal mt16">
@@ -810,22 +773,19 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       <div class="callout callout--dnc reveal"><span class="tag tag--dnc">Do not confuse — TACO vs TRALI</span><p><strong>TACO</strong> is too much volume: hypertensive, responds to diuretics. <strong>TRALI</strong> is lung injury: normal/low pressures, within 6 hours, supported not diuresed. Same breathless patient — opposite mechanism and management.</p></div>
       <div class="callout callout--adv reveal"><span class="tag tag--adv">Advanced pearl</span><p><strong>TA-GVHD</strong> (donor lymphocytes attack the host) and <strong>delayed hemolytic</strong> reactions are rarer. TA-GVHD is prevented by <strong>irradiation</strong>; delayed hemolysis appears days later as a quietly falling hemoglobin with a positive DAT.</p></div>
 
-      <!-- Massive transfusion -->
       <h3 class="mt24 reveal">Massive transfusion — the high-level idea</h3>
       <div class="surface reveal">
         <p>When a patient is hemorrhaging (≈ one blood volume or ≥ 10 units in 24 h), institutions activate a <strong>massive transfusion protocol</strong> and resuscitate in a balanced <strong>1 : 1 : 1</strong> ratio of red cells : plasma : platelets to avoid dilutional coagulopathy.</p>
         <div class="callout callout--pearl"><span class="tag tag--pearl">Student pearl</span><p>Watch the metabolic cost: stored blood’s citrate binds calcium → <strong>hypocalcemia</strong> (give calcium), plus <strong>hyperkalemia</strong> and <strong>hypothermia</strong> (warm the fluids). Remember the lethal triad: cold, acidotic, coagulopathic.</p></div>
       </div>
 
-      <!-- FAQ -->
       <h3 class="mt24 reveal">Beginner FAQ</h3>
       <div class="reveal">
-        <details class="acc"><summary>Why screen for antibodies if we already know the blood type?<span class="chev">›</span></summary><div class="acc-body"><p>ABO/Rh isn’t the whole story. Prior pregnancies or transfusions can create antibodies to <em>other</em> red-cell antigens (Kell, Duffy, Kidd…). The screen finds those so the lab can pick units the patient won’t hemolyze.</p></div></details>
-        <details class="acc"><summary>If O-negative is universal, why not give it to everyone?<span class="chev">›</span></summary><div class="acc-body"><p>O-negative is scarce. It’s reserved for emergencies and for women of child-bearing potential. Everyone else gets type-specific blood to conserve the universal supply.</p></div></details>
-        <details class="acc"><summary>Does a patient consent for every transfusion?<span class="chev">›</span></summary><div class="acc-body"><p>Yes — transfusion is a procedure with risks and benefits. Informed consent (outside true emergencies) is standard, and the bedside ID check at hang time is the single most important safety step.</p></div></details>
+        <details class="acc"><summary>Why screen for antibodies if we already know the blood type?<span class="chev"></span></summary><div class="acc-body"><p>ABO/Rh isn’t the whole story. Prior pregnancies or transfusions can create antibodies to <em>other</em> red-cell antigens (Kell, Duffy, Kidd…). The screen finds those so the lab can pick units the patient won’t hemolyze.</p></div></details>
+        <details class="acc"><summary>If O-negative is universal, why not give it to everyone?<span class="chev"></span></summary><div class="acc-body"><p>O-negative is scarce. It’s reserved for emergencies and for women of child-bearing potential. Everyone else gets type-specific blood to conserve the universal supply.</p></div></details>
+        <details class="acc"><summary>Does a patient consent for every transfusion?<span class="chev"></span></summary><div class="acc-body"><p>Yes — transfusion is a procedure with risks and benefits. Informed consent (outside true emergencies) is standard, and the bedside ID check at hang time is the single most important safety step.</p></div></details>
       </div>
 
-      <!-- Embedded case + checkpoint -->
       <h3 class="mt24 reveal">Try it — bedside case</h3>
       <div class="reveal" data-case-slot="blood"></div>
       <h3 class="mt24 reveal">Quick checkpoint</h3>
@@ -840,15 +800,13 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         <p class="section-sub">Most students try to memorize the clotting cascade and freeze at the bedside. Flip it: start with three questions about the <em>patient</em>, then let a small number of tests localize the problem. This is the framework to keep.</p>
       </div>
 
-      <!-- Framework -->
       <h3 class="reveal">The three questions that organize everything</h3>
       <div class="grid-3 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">①</span><h4>Bleeding or clotting?</h4></div><div class="tcard-body"><p>Is the patient <strong>bleeding</strong> (deficiency / dysfunction) or <strong>clotting</strong> (thrombophilia)? They point to opposite work-ups. Most inpatient coagulation questions are about bleeding or an abnormal screening test.</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">②</span><h4>Inherited or acquired?</h4></div><div class="tcard-body"><p><strong>Inherited</strong> = lifelong, family history, since childhood (hemophilia, vWD). <strong>Acquired</strong> = new, sick patient, on drugs (DIC, liver, warfarin, heparin). Acquired is far more common on the wards.</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">③</span><h4>Screening or specialized?</h4></div><div class="tcard-body"><p><strong>Screening</strong> tests (PT, aPTT, platelets, fibrinogen) localize the problem. <strong>Specialized</strong> tests (mixing study, factor assays, LA panel) confirm it. Screen first; send special tests with a hypothesis.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><span class="sub">01</span><h4>Bleeding or clotting?</h4></div></div><div class="tcard-body"><p>Is the patient <strong>bleeding</strong> (deficiency / dysfunction) or <strong>clotting</strong> (thrombophilia)? They point to opposite work-ups. Most inpatient coagulation questions are about bleeding or an abnormal screening test.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><span class="sub">02</span><h4>Inherited or acquired?</h4></div></div><div class="tcard-body"><p><strong>Inherited</strong> = lifelong, family history, since childhood (hemophilia, vWD). <strong>Acquired</strong> = new, sick patient, on drugs (DIC, liver, warfarin, heparin). Acquired is far more common on the wards.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><span class="sub">03</span><h4>Screening or specialized?</h4></div></div><div class="tcard-body"><p><strong>Screening</strong> tests (PT, aPTT, platelets, fibrinogen) localize the problem. <strong>Specialized</strong> tests (mixing study, factor assays, LA panel) confirm it. Screen first; send special tests with a hypothesis.</p></div></div>
       </div>
 
-      <!-- Screening tests + pathway -->
       <h3 class="mt24 reveal">What the screening tests actually measure</h3>
       <div class="surface reveal">
         <div class="tabs" role="tablist" aria-label="Screening tests">
@@ -880,15 +838,13 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </div>
       </div>
 
-      <!-- Pathway visual -->
       <h3 class="mt24 reveal">The pathway picture (just enough to localize)</h3>
       <div class="grid-3 reveal">
-        <div class="tcard" style="border-top:3px solid var(--info)"><div class="tcard-head"><h4>Intrinsic → aPTT</h4></div><div class="tcard-body"><p class="dose">XII · XI · IX · VIII</p><p>A long aPTT with a normal PT points here.</p></div></div>
-        <div class="tcard" style="border-top:3px solid var(--coag)"><div class="tcard-head"><h4>Extrinsic → PT</h4></div><div class="tcard-body"><p class="dose">VII</p><p>A long PT with a normal aPTT points here (or early warfarin/vit K).</p></div></div>
-        <div class="tcard" style="border-top:3px solid var(--blood)"><div class="tcard-head"><h4>Common → both</h4></div><div class="tcard-body"><p class="dose">X · V · II · fibrinogen</p><p>Both prolonged → common pathway, DIC, liver, or strong anticoagulation.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><h4>Intrinsic → aPTT</h4></div><div class="tcard-body"><p class="dose">XII · XI · IX · VIII</p><p>A long aPTT with a normal PT points here.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><h4>Extrinsic → PT</h4></div><div class="tcard-body"><p class="dose">VII</p><p>A long PT with a normal aPTT points here (or early warfarin/vit K).</p></div></div>
+        <div class="tcard"><div class="tcard-head"><h4>Common → both</h4></div><div class="tcard-body"><p class="dose">X · V · II · fibrinogen</p><p>Both prolonged → common pathway, DIC, liver, or strong anticoagulation.</p></div></div>
       </div>
 
-      <!-- Algorithm -->
       <h3 class="mt24 reveal">Approach to a prolonged screening test</h3>
       <div class="algo reveal">
         <div class="algo-node"><span class="algo-step">1</span><div><h5>Rule out the artifact first</h5><p>Before chasing a coagulopathy, exclude a <strong>preanalytic</strong> cause: an underfilled citrate tube, a heparin-contaminated line draw, a clotted or hemolyzed sample. The most common “coagulopathy” on the wards is a bad tube.</p></div></div>
@@ -901,7 +857,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       </div>
       <div class="callout callout--pearl reveal"><span class="tag tag--pearl">Student pearl</span><p>Memorize this one line and you can reason through most consults: <strong>“Long aPTT? Mix it. Corrects = deficiency. Doesn’t correct = inhibitor.”</strong></p></div>
 
-      <!-- Pattern cards -->
       <h3 class="mt24 reveal">Pattern-recognition cards</h3>
       <div class="grid-auto reveal">
         <div class="tcard"><div class="tcard-head"><h4>DIC</h4></div><div class="tcard-body"><p><strong>Everything consumed.</strong> ↓ platelets, ↓ fibrinogen, ↑ PT/aPTT, ↑↑ D-dimer, schistocytes. Driven by sepsis, malignancy, trauma, obstetric catastrophe. Treat the cause; support if bleeding.</p></div></div>
@@ -915,14 +870,13 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       </div>
       <div class="callout callout--dnc reveal"><span class="tag tag--dnc">Do not confuse — the lupus anticoagulant paradox</span><p>It <em>prolongs</em> a lab test (in-vitro phospholipid effect) but <em>promotes</em> clotting in the patient (in vivo). Long aPTT does not always mean a bleeding risk — context decides.</p></div>
 
-      <!-- Specialized + specimen -->
       <h3 class="mt24 reveal">Specialized tests &amp; specimen quality</h3>
       <div class="grid-2 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">🧬</span><h4>When the special tests get sent</h4></div><div class="tcard-body">
+        <div class="tcard"><div class="tcard-head"><h4>When the special tests get sent</h4></div><div class="tcard-body">
           <p><strong>Mixing study</strong> — deficiency vs inhibitor. <strong>Factor assays</strong> — quantify a specific factor once localized. <strong>LA / antiphospholipid panel</strong> — dRVVT, anticardiolipin, β2-glycoprotein-I; needs persistence ≥ 12 weeks to call APS.</p>
           <div class="callout callout--adv"><span class="tag tag--adv">Advanced pearl</span><p>An acquired <strong>factor inhibitor</strong> is titrated in <em>Bethesda units</em>; thromboelastography (TEG/ROTEM) gives a whole-blood, real-time view in trauma and the OR. Specialist territory — recognize the names.</p></div>
         </div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">⚠️</span><h4>Specimen pitfalls that fake a coagulopathy</h4></div><div class="tcard-body">
+        <div class="tcard"><div class="tcard-head"><h4>Specimen pitfalls that fake a coagulopathy</h4></div><div class="tcard-body">
           <div class="spec-row"><span>Underfilled citrate tube</span><span>falsely ↑ PT/aPTT</span></div>
           <div class="spec-row"><span>Heparin line contamination</span><span>falsely ↑ aPTT</span></div>
           <div class="spec-row"><span>Clotted / hemolyzed sample</span><span>unreliable result</span></div>
@@ -931,7 +885,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </div></div>
       </div>
 
-      <!-- Embedded case + checkpoint -->
       <h3 class="mt24 reveal">Try it — interpret the panel</h3>
       <div class="reveal" data-case-slot="coag"></div>
       <h3 class="mt24 reveal">Quick checkpoint</h3>
@@ -947,22 +900,20 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       </div>
 
       <div class="grid-2 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">♻️</span><div><h4>Therapeutic apheresis</h4><span class="sub">Treating the patient</span></div></div><div class="tcard-body"><p>Remove a <strong>pathologic component</strong> from a sick patient — an antibody, a paraprotein, sickled red cells, or a dangerous excess of cells — and return the rest.</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">🎁</span><div><h4>Donor apheresis</h4><span class="sub">Collecting from a healthy donor</span></div></div><div class="tcard-body"><p>Collect a <strong>single component</strong> from a healthy donor — platelets, plasma, double red cells, granulocytes, or stem cells — and return everything else. Same machine, opposite goal.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Therapeutic apheresis</h4><span class="sub">Treating the patient</span></div></div><div class="tcard-body"><p>Remove a <strong>pathologic component</strong> from a sick patient — an antibody, a paraprotein, sickled red cells, or a dangerous excess of cells — and return the rest.</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Donor apheresis</h4><span class="sub">Collecting from a healthy donor</span></div></div><div class="tcard-body"><p>Collect a <strong>single component</strong> from a healthy donor — platelets, plasma, double red cells, granulocytes, or stem cells — and return everything else. Same machine, opposite goal.</p></div></div>
       </div>
 
-      <!-- Modalities -->
       <h3 class="mt24 reveal">The core modalities — match the tool to the problem</h3>
       <div class="grid-auto reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--info)">◈</span><div><h4>Plasma exchange (TPE)</h4><span class="sub">Removes a bad plasma factor</span></div></div><div class="tcard-body"><p>Removes the patient’s plasma — and whatever pathologic <strong>antibody, immune complex, or paraprotein</strong> it carries — and replaces it with albumin or donor plasma.</p><p class="muted-note">Problem solved: “a harmful molecule is circulating in the plasma.”</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--blood)">⬤</span><div><h4>Red cell exchange (RCE)</h4><span class="sub">Swaps red cells</span></div></div><div class="tcard-body"><p>Removes the patient’s red cells and replaces them with donor red cells — rapidly lowering <strong>HbS%</strong> in sickle cell disease without causing hyperviscosity or iron overload.</p><p class="muted-note">Problem solved: “these red cells are dangerous and must be replaced.”</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--coag)">✦</span><div><h4>Cytapheresis</h4><span class="sub">Removes excess cells</span></div></div><div class="tcard-body"><p><strong>Leukapheresis</strong> for symptomatic hyperleukocytosis (leukostasis in acute leukemia); <strong>plateletpheresis</strong> for symptomatic extreme thrombocytosis.</p><p class="muted-note">Problem solved: “there are too many of one cell, right now.”</p></div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico" style="color:var(--aph)">❖</span><div><h4>HPC / stem-cell collection</h4><span class="sub">Collects progenitor cells</span></div></div><div class="tcard-body"><p>After mobilization (G-CSF ± plerixafor), collect <strong>CD34+ hematopoietic progenitor cells</strong> from the blood for transplant — autologous or allogeneic.</p><p class="muted-note">Problem solved: “we need stem cells for a transplant.”</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Plasma exchange (TPE)</h4><span class="sub">Removes a bad plasma factor</span></div></div><div class="tcard-body"><p>Removes the patient’s plasma — and whatever pathologic <strong>antibody, immune complex, or paraprotein</strong> it carries — and replaces it with albumin or donor plasma.</p><p class="muted-note">Problem solved: “a harmful molecule is circulating in the plasma.”</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Red cell exchange (RCE)</h4><span class="sub">Swaps red cells</span></div></div><div class="tcard-body"><p>Removes the patient’s red cells and replaces them with donor red cells — rapidly lowering <strong>HbS%</strong> in sickle cell disease without causing hyperviscosity or iron overload.</p><p class="muted-note">Problem solved: “these red cells are dangerous and must be replaced.”</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>Cytapheresis</h4><span class="sub">Removes excess cells</span></div></div><div class="tcard-body"><p><strong>Leukapheresis</strong> for symptomatic hyperleukocytosis (leukostasis in acute leukemia); <strong>plateletpheresis</strong> for symptomatic extreme thrombocytosis.</p><p class="muted-note">Problem solved: “there are too many of one cell, right now.”</p></div></div>
+        <div class="tcard"><div class="tcard-head"><div><h4>HPC / stem-cell collection</h4><span class="sub">Collects progenitor cells</span></div></div><div class="tcard-body"><p>After mobilization (G-CSF ± plerixafor), collect <strong>CD34+ hematopoietic progenitor cells</strong> from the blood for transplant — autologous or allogeneic.</p><p class="muted-note">Problem solved: “we need stem cells for a transplant.”</p></div></div>
       </div>
 
-      <!-- TTP highlight -->
       <h3 class="mt24 reveal">The can’t-miss consult: TTP</h3>
-      <div class="surface reveal" style="border-left:3px solid var(--blood)">
+      <div class="surface reveal" style="border-left:2px solid var(--blood)">
         <div class="lead-row"><span class="tag tag--why">Why it matters</span><span class="q-diff integrative">emergency</span></div>
         <p><strong>Thrombotic thrombocytopenic purpura</strong> is a deficiency of <strong>ADAMTS13</strong> (usually an autoantibody) → ultra-large von Willebrand multimers → platelet microthrombi everywhere. Recognize it as <strong>microangiopathic hemolytic anemia + thrombocytopenia</strong> with no better explanation — don’t wait for the full “pentad.”</p>
         <div class="labs">
@@ -978,7 +929,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         <div class="callout callout--dnc"><span class="tag tag--dnc">Do not confuse — TTP vs DIC</span><p>Both have low platelets and schistocytes. <strong>TTP: PT/aPTT and fibrinogen are normal.</strong> DIC consumes them, so PT/aPTT are prolonged and fibrinogen is low. That panel is how you tell them apart.</p></div>
       </div>
 
-      <!-- Indications -->
       <h3 class="mt24 reveal">Indications a student should recognize</h3>
       <div class="table-wrap reveal">
         <table class="cmp">
@@ -995,16 +945,15 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       </div>
       <div class="callout callout--adv reveal"><span class="tag tag--adv">Advanced pearl</span><p><strong>ASFA categories</strong> (from the <em>Journal of Clinical Apheresis</em> guidelines) rank indications I–IV: <strong>I</strong> = first-line, <strong>II</strong> = second-line, <strong>III</strong> = individualized/uncertain, <strong>IV</strong> = ineffective or harmful. You don’t need the full list — just the concept and the Category I emergencies.</p></div>
 
-      <!-- Replacement fluid + risks -->
       <h3 class="mt24 reveal">Replacement fluids &amp; complications</h3>
       <div class="grid-2 reveal">
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">💧</span><h4>Albumin vs plasma — what goes back in</h4></div><div class="tcard-body">
+        <div class="tcard"><div class="tcard-head"><h4>Albumin vs plasma — what goes back in</h4></div><div class="tcard-body">
           <p>In plasma exchange you remove a patient’s plasma, so you must replace the volume.</p>
           <div class="spec-row"><span>Albumin (5%) — default</span><span>no factors, no infectious risk</span></div>
           <div class="spec-row"><span>Plasma (FFP)</span><span>for TTP or active bleeding</span></div>
           <div class="callout callout--pearl"><span class="tag tag--pearl">Student pearl</span><p>Albumin contains <strong>no clotting factors</strong> — repeated exchanges deplete fibrinogen and immunoglobulins, so the team watches for bleeding. TTP is the classic reason to replace with <strong>plasma</strong> instead.</p></div>
         </div></div>
-        <div class="tcard"><div class="tcard-head"><span class="tcard-ico">⚡</span><h4>Risks &amp; line issues</h4></div><div class="tcard-body">
+        <div class="tcard"><div class="tcard-head"><h4>Risks &amp; line issues</h4></div><div class="tcard-body">
           <div class="spec-row"><span>Citrate → hypocalcemia</span><span>perioral/finger tingling</span></div>
           <div class="spec-row"><span>Hypotension</span><span>fluid shifts</span></div>
           <div class="spec-row"><span>Vascular access</span><span>large-bore/central line risks</span></div>
@@ -1013,7 +962,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </div></div>
       </div>
 
-      <!-- What the physician does -->
       <div class="surface reveal mt16">
         <h4>What a transfusion medicine physician actually does on the apheresis service</h4>
         <ul class="ticks">
@@ -1024,7 +972,6 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
         </ul>
       </div>
 
-      <!-- Embedded case + checkpoint -->
       <h3 class="mt24 reveal">Try it — the consult page</h3>
       <div class="reveal" data-case-slot="aph"></div>
       <h3 class="mt24 reveal">Quick checkpoint</h3>
@@ -1068,10 +1015,10 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       <div class="section-head reveal">
         <span class="kicker">Reference · Cheat sheet</span>
         <h2 id="gloss-h">Glossary &amp; quick reference.</h2>
-        <p class="section-sub">Beginner-friendly definitions. Terms with a gold edge are the <strong>must-know</strong> set — the vocabulary to be comfortable with by the end of the day.</p>
+        <p class="section-sub">Beginner-friendly definitions. Terms with a blue edge are the <strong>must-know</strong> set — the vocabulary to be comfortable with by the end of the day.</p>
       </div>
       <div class="search reveal">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
         <input type="search" id="glossSearch" placeholder="Search terms — e.g. cryoprecipitate, aPTT, ADAMTS13…" aria-label="Search glossary" />
       </div>
       <div class="gloss-list" id="glossList" aria-live="polite"></div>
@@ -1131,12 +1078,11 @@ table.cmp{ width:100%; border-collapse:collapse; font-size:.85rem; min-width:640
       <div class="surface reveal mt24" style="text-align:center">
         <p class="big-quote" style="margin:0 auto; max-width:46ch">You came in knowing anemia, bleeding, and thrombosis. You’re leaving able to <em>act</em> on them through the transfusion service. Nicely done, Chloe &amp; Matt.</p>
         <div class="hero-actions" style="justify-content:center; margin-bottom:0">
-          <a class="btn btn--primary" href="#start">Back to the top ↑</a>
+          <a class="btn btn--primary" href="#start">Back to the top</a>
           <a class="btn btn--ghost" href="#quiz">Re-test in the quiz center</a>
         </div>
       </div>
     </section>
-
 
     <footer class="foot">
       <p><strong>Transfusion Medicine — One-Day Crash Course.</strong> Built for Chloe &amp; Matt.</p>
@@ -1159,7 +1105,6 @@ const PILLAR_NAME = { blood:'Blood bank', coag:'Coagulation', aph:'Apheresis' };
    DATA — QUESTIONS
    ============================================================ */
 const QUESTIONS = [
-  // ---- Blood bank ----
   { id:'b1', pillar:'blood', diff:'easy',
     stem:'A 22-year-old woman arrives hypotensive and bleeding after a crash. There is no blood type on file and she is exsanguinating. What do you release first?',
     opts:['O-negative red cells (emergency release)','AB-positive red cells','Type-specific blood after a full crossmatch','The patient’s own banked autologous units'],
@@ -1217,7 +1162,6 @@ const QUESTIONS = [
     wrong:'Irradiation, leukoreduction, and CMV-negative selection do not remove the offending plasma proteins.',
     pearl:'Recurrent severe allergic/anaphylactic reactions or IgA deficiency → washed products.' },
 
-  // ---- Coagulation ----
   { id:'c1', pillar:'coag', diff:'easy',
     stem:'The PT/INR is used primarily to monitor which therapy?',
     opts:['Unfractionated heparin','Warfarin','Low-molecular-weight heparin','Aspirin'],
@@ -1275,7 +1219,6 @@ const QUESTIONS = [
     wrong:'Working up, transfusing, or giving vitamin K before excluding a bad sample wastes resources and may harm the patient.',
     pearl:'Rule out the bad tube before chasing a coagulopathy — the commonest “coagulopathy” on the wards is preanalytic.' },
 
-  // ---- Apheresis ----
   { id:'a1', pillar:'aph', diff:'easy',
     stem:'What is the default replacement fluid for most therapeutic plasma exchanges?',
     opts:['Albumin','Plasma (FFP) every time','Normal saline alone','Packed red blood cells'],
@@ -1320,7 +1263,6 @@ const QUESTIONS = [
     pearl:'In TTP, platelets are “fuel to the fire” — treat with plasma exchange instead.' }
 ];
 
-/* ---- Embedded checkpoint questions (separate from the bank) ---- */
 const CHECKPOINTS = [
   { id:'bc1', pillar:'blood', diff:'easy',
     stem:'Which unit is the universal RED-CELL donor in an emergency?',
@@ -1589,12 +1531,7 @@ function renderGloss(filter){
    THEME
    ============================================================ */
 const root = document.documentElement;
-function setTheme(t){ root.dataset.theme = t; try{ localStorage.setItem('tm-theme', t); }catch(e){} if(BG.reduce) BG.frame(); }
-(function initTheme(){
-  let t; try{ t = localStorage.getItem('tm-theme'); }catch(e){}
-  if(!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  root.dataset.theme = t;
-})();
+function setTheme(t){ root.dataset.theme = t; try{ localStorage.setItem('tm-theme', t); }catch(e){} }
 $('#themeBtn').addEventListener('click', ()=> setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
 
 /* ============================================================
@@ -1623,14 +1560,25 @@ function onScroll(){
 main.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(()=>{ onScroll(); ticking = false; }); ticking = true; } });
 if(toTop) toTop.addEventListener('click', ()=> main.scrollTo({ top:0, behavior:'smooth' }));
 
-/* mobile drawer */
 const body = document.body;
 const menuBtn = $('#menuBtn');
 menuBtn.addEventListener('click', ()=>{
   const open = body.classList.toggle('nav-open');
   menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
 });
-navItems.forEach(n => n.addEventListener('click', ()=>{ body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded','false'); }));
+/* explicit smooth-scroll for in-page links (robust inside the custom scroll container) */
+const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+$$('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const id = a.getAttribute('href').slice(1);
+    const target = id && document.getElementById(id);
+    if(!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block:'start' });
+    try{ history.replaceState(null, '', '#'+id); }catch(err){}
+    body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded','false');
+  });
+});
 document.addEventListener('click', e=>{
   if(body.classList.contains('nav-open') && !e.target.closest('.sidebar') && !e.target.closest('#menuBtn')){
     body.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded','false');
@@ -1666,114 +1614,6 @@ function initReveal(){
 }
 
 /* ============================================================
-   CANVAS BACKGROUND — hematology field + fibrin network
-   ============================================================ */
-const BG = (function(){
-  const canvas = $('#bg'); const ctx = canvas.getContext('2d');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let W=0, H=0, DPR=1, nodes=[], rings=[], raf=null;
-  const PAL = {
-    dark:  { cell:'255,92,112', spark:'120,210,228', alt:'128,134,250', line:'150,160,235', ring:'150,135,250' },
-    light: { cell:'214,58,86',  spark:'34,140,172',  alt:'92,92,224',   line:'120,124,206', ring:'120,110,228' }
-  };
-  const pal = ()=> PAL[root.dataset.theme === 'light' ? 'light' : 'dark'];
-
-  function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth = window.innerWidth;
-    H = canvas.clientHeight = window.innerHeight;
-    canvas.width = W*DPR; canvas.height = H*DPR;
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-    build();
-  }
-  function build(){
-    const n = Math.max(14, Math.min(46, Math.floor(W*H/30000)));
-    nodes = [];
-    for(let i=0;i<n;i++){
-      const spark = Math.random() < 0.28;
-      nodes.push({
-        x:Math.random()*W, y:Math.random()*H,
-        vx:(Math.random()-0.5)*0.22, vy:(Math.random()-0.5)*0.22,
-        r: spark ? 1.6+Math.random()*1.8 : 8+Math.random()*16,
-        depth: 0.4+Math.random()*0.6,
-        spark, alt: Math.random()<0.5
-      });
-    }
-    rings = [
-      { cx:W*0.82, cy:H*0.16, rx:150, ry:64, rot:0,  spd:0.0012, tilt:-0.5 },
-      { cx:W*0.16, cy:H*0.82, rx:190, ry:80, rot:1,  spd:-0.0009, tilt:0.6 }
-    ];
-  }
-  function drawRing(g){
-    const p = pal();
-    for(let k=0;k<3;k++){
-      ctx.save();
-      ctx.translate(g.cx, g.cy); ctx.rotate(g.rot + g.tilt + k*0.5);
-      ctx.beginPath();
-      ctx.ellipse(0,0, g.rx-(k*26), g.ry-(k*11), 0, 0, Math.PI*2);
-      ctx.strokeStyle = 'rgba('+p.ring+','+(0.05 - k*0.012)+')';
-      ctx.lineWidth = 1.1; ctx.stroke();
-      ctx.restore();
-    }
-  }
-  function frame(){
-    const p = pal();
-    ctx.clearRect(0,0,W,H);
-    rings.forEach(drawRing);
-    // fibrin network
-    for(let i=0;i<nodes.length;i++){
-      for(let j=i+1;j<nodes.length;j++){
-        const a=nodes[i], b=nodes[j];
-        if(a.spark && b.spark) continue;
-        const dx=a.x-b.x, dy=a.y-b.y; const d=Math.hypot(dx,dy);
-        if(d<150){
-          const al=(1-d/150)*0.09;
-          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-          ctx.strokeStyle='rgba('+p.line+','+al.toFixed(3)+')'; ctx.lineWidth=0.7; ctx.stroke();
-        }
-      }
-    }
-    // cells + sparks
-    nodes.forEach(o=>{
-      if(o.spark){
-        ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-        ctx.fillStyle='rgba('+p.spark+','+(0.5*o.depth).toFixed(3)+')'; ctx.fill();
-      } else {
-        const col = o.alt ? p.alt : p.cell;
-        const g = ctx.createRadialGradient(o.x,o.y,o.r*0.2,o.x,o.y,o.r);
-        g.addColorStop(0,'rgba('+col+','+(0.16*o.depth).toFixed(3)+')');
-        g.addColorStop(0.7,'rgba('+col+','+(0.07*o.depth).toFixed(3)+')');
-        g.addColorStop(1,'rgba('+col+',0)');
-        ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-        ctx.beginPath(); ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-        ctx.strokeStyle='rgba('+col+','+(0.10*o.depth).toFixed(3)+')'; ctx.lineWidth=1; ctx.stroke();
-      }
-    });
-  }
-  function step(){
-    nodes.forEach(o=>{
-      o.x+=o.vx*o.depth; o.y+=o.vy*o.depth;
-      if(o.x< -30) o.x=W+30; if(o.x>W+30) o.x=-30;
-      if(o.y< -30) o.y=H+30; if(o.y>H+30) o.y=-30;
-    });
-    rings.forEach(g=> g.rot+=g.spd);
-    frame();
-    raf=requestAnimationFrame(step);
-  }
-  function start(){
-    resize();
-    if(reduce){ frame(); return; }
-    cancelAnimationFrame(raf); step();
-  }
-  window.addEventListener('resize', ()=>{ cancelAnimationFrame(raf); resize(); if(!reduce) step(); else frame(); });
-  document.addEventListener('visibilitychange', ()=>{
-    if(reduce) return;
-    if(document.hidden){ cancelAnimationFrame(raf); } else { cancelAnimationFrame(raf); step(); }
-  });
-  return { start, frame, reduce };
-})();
-
-/* ============================================================
    STATS + INIT
    ============================================================ */
 function fillStats(){
@@ -1799,7 +1639,6 @@ $$('#quizFilters .chip').forEach(chip=>{
 
 initReveal();
 onScroll();
-BG.start();
 })();
 </script>
 </body>

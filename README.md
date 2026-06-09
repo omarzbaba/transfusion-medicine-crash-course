@@ -19,7 +19,7 @@ Built for **Chloe & Matt**. It’s a working teaching tool — interactive cases
 - **Case Lab** — progressive-disclosure cases (trauma bay, the pre-op panel that won’t make sense, the 2 a.m. TTP consult, and integrated cross-pillar cases).
 - **Searchable glossary / cheat sheet** — 39 beginner-friendly terms; the must-know set is flagged.
 - **Final recap** — 15 take-home points, “how to sound smart on rounds,” and good questions to ask on service.
-- **Light & dark themes**, scroll-spy navigation, reading-progress bar, and a subtle canvas hematology background.
+- **Light & dark themes** (true-black dark, clean-white light), scroll-spy navigation, a reading-progress bar, and a restrained ambient background — a near-monochrome, Apple-grade aesthetic.
 - **Accessible**: semantic HTML, keyboard navigable, `prefers-reduced-motion` respected, focus-visible states.
 
 ---
@@ -61,8 +61,8 @@ Everything lives in **`index.html`**, organized top-to-bottom as:
 
 ## Libraries used
 
-- **None for behavior.** All interactivity is vanilla JavaScript; the background is hand-written `<canvas>`. No framework, no bundler, no runtime dependencies.
-- **Google Fonts** (`Inter`, `JetBrains Mono`) loaded via `<link>`, with a full system-font fallback so it degrades gracefully offline.
+- **None at all.** All interactivity is vanilla JavaScript; every visual is pure CSS. No framework, no bundler, no runtime dependencies.
+- **No web fonts.** It uses the native system UI stack (SF Pro on Apple devices, Segoe/Helvetica elsewhere) for an Apple-grade, dependency-free, instant-loading feel — nothing to download.
 
 This keeps it fast, portable, and trivially hostable on GitHub Pages.
 
@@ -70,9 +70,9 @@ This keeps it fast, portable, and trivially hostable on GitHub Pages.
 
 ## How the animations work
 
-- **Reveal-on-scroll:** elements with the `.reveal` class start at `opacity:0` and translate up. An `IntersectionObserver` (rooted on the scrolling `<main>`) adds `.in` to fade/slide them in once, then unobserves. Disabled under `prefers-reduced-motion`.
-- **Hematology background (`#bg` canvas):** a slowly drifting field of translucent red-cell discs and platelet “sparks,” connected by faint filaments (a fibrin-network metaphor) when nearby, over two slow rotating elliptical “plasma rings.” It uses `requestAnimationFrame`, scales for `devicePixelRatio`, pauses when the tab is hidden, recolors with the theme, and renders a single static frame (no motion) when reduced-motion is requested.
-- **UI motion:** CSS transitions only, on compositor-friendly properties (`opacity`, `transform`).
+- **Reveal-on-scroll:** elements with the `.reveal` class start at `opacity:0` and translate up 12px. An `IntersectionObserver` (rooted on the scrolling `<main>`) adds `.in` to fade them in once, then unobserves. Disabled under `prefers-reduced-motion`.
+- **Ambient background:** a single, very soft pair of radial washes on a fixed `body::before` layer (`opacity` ~0.05) that drifts a few pixels over 26s, plus a barely-visible SVG grain overlay for editorial texture. No particles, no canvas — quiet depth that never competes with the text. The drift is paused under reduced-motion.
+- **UI motion:** CSS transitions only, on compositor-friendly properties (`opacity`, `transform`), ~200–400 ms with an ease-out curve. Buttons respond with a subtle `scale(.98)` on press; cards lift a few pixels on hover.
 
 ---
 
